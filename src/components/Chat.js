@@ -65,6 +65,8 @@ const NameCircle = styled.div`
 const Chat = ({ socket, roomId, alias }) => {
   const [message, setMessage] = useState("");
   const [msgReceived, setMsgReceived] = useState([]);
+  const [systemMsg, setSystemMsg] = useState("");
+  const [userCount, setUserCount] = useState(0);
 
   const sendMessage = () => {
     console.log("messge clicked");
@@ -99,13 +101,27 @@ const Chat = ({ socket, roomId, alias }) => {
         return [...mySet];
       });
     });
+
+    socket.on("who_join", (data) => {
+      setSystemMsg(`${data.alias} joined the room`);
+
+      setTimeout(() => {
+        setSystemMsg("");
+      }, 2000);
+    });
+
+    socket.on("num_connection", (data) => {
+      console.log("num_connection in this room", data);
+      setUserCount(data.userCount);
+    });
   }, [socket]);
 
   return (
     <ChatContainer>
       <Title title="Chat" />
-
+      {userCount && <div>current user in chat room: {userCount}</div>}
       <ChatBoxContainer>
+        {systemMsg && <div>{systemMsg}</div>}
         <MsgContainer>
           {msgReceived &&
             msgReceived.map((msg, index) => {

@@ -26,7 +26,7 @@ const ActionButton = styled.button`
 
 const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
   const handleJoinRoom = () => {
-    socket.emit("join_room", { roomId });
+    socket.emit("join_room", { roomId, alias });
   };
   const handleLeaveRoom = () => {
     socket.emit("leave_room", { roomId });
