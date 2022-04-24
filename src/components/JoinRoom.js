@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Title from "./Title";
+import { useNavigate } from "react-router-dom";
 
 const JoinRoomContainer = styled.div`
   display: flex;
@@ -12,25 +13,39 @@ const JoinRoomContainer = styled.div`
 const RowContainer = styled.div`
   display: grid;
   gap: 2px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   margin-top: 8px;
 `;
 
-const ActionButton = styled.button`
+export const ActionButton = styled.button`
   padding: 4px;
   background-color: ${(props) => props.buttonColor || "flex-start"};
   border-radius: 5px;
   color: white;
   border: none;
+  width: 80px;
 `;
 
 const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
+  const navigate = useNavigate();
+
   const handleJoinRoom = () => {
-    socket.emit("join_room", { roomId, alias });
+    let tmpRoomId = roomId;
+    console.log("tmpRoomId ", tmpRoomId);
+    if (tmpRoomId === "") {
+      tmpRoomId = 3; //default room #3
+      setRoomId(tmpRoomId);
+    }
+
+    socket.emit("join_room", {
+      roomId: tmpRoomId,
+      alias,
+    });
+
+    setRoomId("");
+    navigate(`/game-room:${tmpRoomId}`);
   };
-  const handleLeaveRoom = () => {
-    socket.emit("leave_room", { roomId });
-  };
+
   return (
     <JoinRoomContainer>
       <Title title="Join Room" />
@@ -51,9 +66,6 @@ const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
       <RowContainer>
         <ActionButton buttonColor="green" onClick={() => handleJoinRoom()}>
           Join
-        </ActionButton>
-        <ActionButton buttonColor="pink" onClick={() => handleLeaveRoom()}>
-          Leave
         </ActionButton>
       </RowContainer>
     </JoinRoomContainer>

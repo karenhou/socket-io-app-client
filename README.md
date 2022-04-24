@@ -38,4 +38,5 @@ npm start
 
 ## TODOs
 
-- use react router to direct join page to chat/game page
+- strict a room to have 2 person
+- reload stay in the same room

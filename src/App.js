@@ -1,22 +1,11 @@
 import "./App.css";
 import io from "socket.io-client";
 import React, { useState } from "react";
-import styled from "styled-components";
-import Chat from "./components/Chat";
-import Games from "./components/Games";
 import JoinRoom from "./components/JoinRoom";
+import { Routes, Route } from "react-router-dom";
+import GameRoom from "./components/GameRoom";
 
 const socket = io.connect("http://localhost:3001");
-
-const DividedContainer = styled.div`
-  flex: 1;
-  flex-direction: column;
-  padding: 0 24px;
-`;
-
-const AppContainer = styled.div`
-  display: flex;
-`;
 
 function App() {
   const [roomId, setRoomId] = useState("");
@@ -24,21 +13,31 @@ function App() {
 
   return (
     <div className="App">
-      <JoinRoom
-        socket={socket}
-        roomId={roomId}
-        setRoomId={setRoomId}
-        alias={alias}
-        setAlias={setAlias}
-      />
-      <AppContainer>
-        <DividedContainer>
-          <Games socket={socket} roomId={roomId} setRoomId={setRoomId} />
-        </DividedContainer>
-        <DividedContainer>
-          <Chat socket={socket} roomId={roomId} alias={alias}></Chat>
-        </DividedContainer>
-      </AppContainer>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <JoinRoom
+              socket={socket}
+              roomId={roomId}
+              setRoomId={setRoomId}
+              alias={alias}
+              setAlias={setAlias}
+            />
+          }
+        />
+        <Route
+          path="/game-room:roomId"
+          element={
+            <GameRoom
+              socket={socket}
+              roomId={roomId}
+              setRoomId={setRoomId}
+              alias={alias}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }

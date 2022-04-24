@@ -20,10 +20,7 @@ const Games = ({ socket, roomId }) => {
       console.log("game_result", data, new Date().getTime());
 
       setChartInfo((old) => {
-        console.log("old ", old, data);
-
         let mySet = new Set([...old, data]);
-
         return [...mySet];
       });
     });
@@ -31,7 +28,7 @@ const Games = ({ socket, roomId }) => {
 
   return (
     <div>
-      <Title title="Game" />
+      <Title title="Guessing Game" />
       <button onClick={() => handleStartGame()}>Start</button>
 
       {chartInfo &&
