@@ -88,9 +88,6 @@ const GuessingGame = ({ resultNum, socket, roomId }) => {
 
   return (
     <div className="text-center">
-      <h2 className="font-bold text-2xl text-center mt-2 mb-3">
-        Guessing Game
-      </h2>
       <div className="text-center border-2 border-slate-300 w-16 h-8 rounded-md text-white hover:text-red-200 mx-auto">
         {randomNum}
       </div>
