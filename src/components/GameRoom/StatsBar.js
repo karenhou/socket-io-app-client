@@ -14,26 +14,27 @@ const GameRoomStatusRow = styled.div`
   border-radius: 10px;
 `;
 
-const GameRoomStats = ({ socket, roomId }) => {
+const StatsBar = ({ socket, roomId }) => {
   const [userCount, setUserCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("num_connection", (data) => {
-      console.log("num_connection in this room", data);
+      // console.log("num_connection in this room", data);
       setUserCount(data.userCount);
     });
-    console.log("roomId", roomId);
+    console.log("roomId StatsBar", roomId);
   }, [socket]);
 
   const handleLeaveRoom = () => {
+    localStorage.removeItem("alias");
     socket.emit("leave_room", { roomId });
     navigate("/");
   };
 
   return (
     <GameRoomStatusRow>
-      <div>Gameroom ID: {roomId === undefined ? "N/A" : roomId}</div>
+      <div>Gameroom ID: {!roomId ? "N/A" : roomId}</div>
       <div>{userCount ? userCount : 0} users in the room</div>
       <ActionButton
         buttonColor="orange"
@@ -44,4 +45,4 @@ const GameRoomStats = ({ socket, roomId }) => {
   );
 };
 
-export default GameRoomStats;
+export default StatsBar;

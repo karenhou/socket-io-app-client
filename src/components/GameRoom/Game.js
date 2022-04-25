@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
 import GuessingGame from "./GuessingGame";
 import Title from "../Title";
+import ActionButton from "../ActionButton";
+import styled from "styled-components";
 
-const Games = ({ socket, roomId }) => {
-  const [guessNum, setGuessNum] = useState("");
+const SubTitle = styled.div`
+  color: gray;
+  /* margin-bottom: 8px; */
+`;
+
+const ChartInfoContainer = styled.div`
+  margin-bottom: 8px;
+`;
+
+const Game = ({ socket, roomId, alias }) => {
+  const [targetNumber, setTargetNumber] = useState("");
   const [chartInfo, setChartInfo] = useState("");
 
   const handleStartGame = () => {
@@ -11,16 +22,17 @@ const Games = ({ socket, roomId }) => {
   };
 
   useEffect(() => {
-    socket.on("guessingNum", (data) => {
-      console.log("guessingNum", data);
-      setGuessNum(data.guessNum);
+    socket.on("targeted_number", (data) => {
+      console.log("targeted_number", data);
+      setTargetNumber(data.targetNumber);
     });
 
     socket.on("game_result", (data) => {
-      console.log("game_result", data, new Date().getTime());
+      console.log("game_result", data);
 
       setChartInfo((old) => {
-        let mySet = new Set([...old, data]);
+        let tmp = JSON.stringify(data);
+        let mySet = new Set([...old, tmp]);
         return [...mySet];
       });
     });
@@ -29,21 +41,46 @@ const Games = ({ socket, roomId }) => {
   return (
     <div>
       <Title title="Game" />
-      <button onClick={() => handleStartGame()}>Start</button>
 
-      {chartInfo &&
-        chartInfo.map((item) => (
-          <div
-            key={
-              item.sockeId
-            }>{`socketId: ${item.socketId}, used: ${item.guessCount} time to guess`}</div>
-        ))}
+      {targetNumber === "" && (
+        <>
+          <SubTitle>
+            Guess 4 numbers ranged from 0-9, no duplicates, 10 shots
+          </SubTitle>
+          <ActionButton
+            text="Start"
+            actionFn={handleStartGame}
+            buttonColor="#227722"
+          />
+        </>
+      )}
 
-      {guessNum && (
-        <GuessingGame resultNum={guessNum} socket={socket} roomId={roomId} />
+      {chartInfo && (
+        <>
+          <SubTitle> Score board </SubTitle>
+          {chartInfo.map((item, index) => {
+            const parsed = JSON.parse(item);
+            return (
+              <ChartInfoContainer
+                key={
+                  index
+                }>{`User: ${parsed.alias}, used: ${parsed.guessCount} time to guess it`}</ChartInfoContainer>
+            );
+          })}
+        </>
+      )}
+
+      {targetNumber && (
+        <GuessingGame
+          targetNumber={targetNumber}
+          socket={socket}
+          roomId={roomId}
+          alias={alias}
+          setChartInfo={setChartInfo}
+        />
       )}
     </div>
   );
 };
 
-export default Games;
+export default Game;

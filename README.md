@@ -22,4 +22,4 @@ npm start
 ## TODOs
 
 - strict a room to have 2 person
-- reload stay in the same room
+- clean code / refactor a bit

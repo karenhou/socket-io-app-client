@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import ActionButton, { Button } from "../ActionButton";
+import InputComponent from "../InputComponent";
 
-const generateRandomNum = () => {
-  let arr = new Set();
-  while (arr.size !== 4) {
-    let ranNum = Math.floor(Math.random() * 9);
-    arr.add(ranNum);
-  }
-  return [...arr];
+const GuessBtn = styled(Button)`
+  margin-right: 8px;
+  margin-left: 8px;
+`;
+
+const ResultTextWrapper = styled.h2`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const ResultText = ({ text }) => {
+  return <ResultTextWrapper>{text}</ResultTextWrapper>;
 };
+
+const GuessingRecordContainer = styled.div`
+  width: 320px;
+  margin: auto;
+  border: 2px solid black;
+  padding: 8px;
+  border-radius: 5px;
+
+  li {
+    list-style-type: none;
+  }
+`;
 
 const compareResult = (userGuess, answer) => {
   let rightNumCount = 0; //for B
@@ -30,42 +50,42 @@ const checkEndGame = (result) => {
   return result[0] === 4;
 };
 
-const GuessingGame = ({ resultNum, socket, roomId }) => {
-  const [randomNum, setRandomNum] = useState([]);
+const GuessingGame = ({
+  targetNumber,
+  socket,
+  roomId,
+  alias,
+  setChartInfo,
+}) => {
   const [guessRecord, setGuessRecord] = useState([]);
   const [inputGuess, setInputGuess] = useState("");
   const [hasWon, setHasWon] = useState(0);
 
-  useEffect(() => {
-    setRandomNum(resultNum);
-  }, []);
-
   const handleGuess = (guess) => {
     const userGuess = guess.split("").map((x) => parseInt(x));
-    // console.log("useGuess", userGuess);
+    console.log("useGuess", userGuess);
 
-    let result = compareResult(userGuess, randomNum);
+    let result = compareResult(userGuess, targetNumber);
 
     // console.log("result ", result);
 
-    let hasWon = checkEndGame(result);
+    let checkWon = checkEndGame(result);
 
-    // console.log("result ", hasWon);
-    if (!hasWon) {
+    // console.log("result ", checkWon);
+    if (!checkWon) {
       setGuessRecord((oldRecord) => {
         if (oldRecord.length === 9) {
-          console.log("oldRecord", oldRecord.length);
-          setHasWon(2);
+          setHasWon(2); //lost
           return [];
-        } else {
-          return [...oldRecord, `${inputGuess} ${result[0]}A ${result[1]}B`];
         }
+        return [...oldRecord, `${inputGuess}, ${result[0]}A ${result[1]}B`];
       });
     } else {
       let resultObj = {
         roomId: roomId,
         guessCount: 1,
         socketId: socket.id,
+        alias: alias,
       };
 
       if (guessRecord.length > 0) {
@@ -79,59 +99,67 @@ const GuessingGame = ({ resultNum, socket, roomId }) => {
     setInputGuess("");
   };
 
+  useEffect(() => {
+    socket.on("reset_game", () => {
+      setInputGuess("");
+      setGuessRecord([]);
+      setHasWon(0);
+      setChartInfo("");
+    });
+  }, []);
+
   const handleResetGame = () => {
-    setRandomNum(generateRandomNum());
-    setInputGuess("");
-    setGuessRecord([]);
-    setHasWon(0);
+    console.log("handleResetGame");
+    socket.emit("reset_game", { roomId });
   };
 
   return (
-    <div className="text-center">
-      <div className="text-center border-2 border-slate-300 w-16 h-8 rounded-md text-white hover:text-red-200 mx-auto">
-        {randomNum}
-      </div>
+    <>
       <div>
-        <input
-          type="text"
-          className="border-2 rounded p-2 text-black mt-2"
+        <InputComponent
+          placeholder="Guess"
           value={inputGuess}
-          onChange={(e) => setInputGuess(e.target.value)}
+          setValue={setInputGuess}
         />
-        <button
-          className="ml-2 rounded bg-green-500 text-white p-2 disabled:hover:cursor-not-allowed"
+        <GuessBtn
           disabled={inputGuess.length === 0}
-          onClick={() => handleGuess(inputGuess)}>
+          onClick={() => handleGuess(inputGuess)}
+          buttonColor="green">
           Guess
-        </button>
-        <button
-          className="ml-2 rounded bg-orange-500 text-white p-2"
-          onClick={() => handleResetGame()}>
-          Reset
-        </button>
-      </div>
+        </GuessBtn>
 
-      <h4>Guesses Log, Guess Count:{guessRecord.length}</h4>
-      <span className="text-gray-400">
-        You have up to 10 guess before game over
-      </span>
+        <ActionButton
+          buttonColor="red"
+          text="Reset"
+          actionFn={handleResetGame}
+        />
+      </div>
 
       {hasWon === 2 ? (
-        <div>You lose, answer:{randomNum}</div>
+        <ResultText
+          text={`You have used all your guesses. You lost, Answer is ${targetNumber.join(
+            ""
+          )}`}
+        />
       ) : (
         <>
           {hasWon === 1 ? (
-            <div>You won</div>
+            <ResultText text="You won" />
           ) : (
-            <ul>
-              {guessRecord.map((guess, index) => {
-                return <li key={index}>{guess}</li>;
-              })}
-            </ul>
+            <>
+              <h4>Guess Count Left: {10 - guessRecord.length}</h4>
+              {guessRecord.length > 0 && (
+                <GuessingRecordContainer>
+                  {guessRecord.map((guess, index) => {
+                    return <li key={index}>{guess}</li>;
+                  })}
+                </GuessingRecordContainer>
+              )}
+            </>
           )}
         </>
       )}
-    </div>
+    </>
   );
 };
 

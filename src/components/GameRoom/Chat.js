@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Title from "./Title";
+import Title from "../Title";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const MsgContainer = styled.div`
   flex-grow: 1;
   border: solid 2px gray;
   border-radius: 10px;
-  margin: 10px 24px;
+  margin: 0px 24px 10px 24px;
   padding: 10px;
   text-align: left;
 `;

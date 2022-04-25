@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Title from "./Title";
 import { useNavigate } from "react-router-dom";
 import ActionButton from "./ActionButton";
+import InputComponent from "./InputComponent";
 
 const JoinRoomContainer = styled.div`
   display: flex;
@@ -17,17 +18,6 @@ const RowContainer = styled.div`
   grid-template-columns: 1fr;
   margin-top: 8px;
 `;
-
-const InputComponent = ({ placeholder, value, setValue }) => {
-  return (
-    <input
-      placeholder={placeholder}
-      type="text"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
-};
 
 const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
   const navigate = useNavigate();

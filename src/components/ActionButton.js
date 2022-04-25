@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+export const Button = styled.button`
   padding: 4px;
   background-color: ${(props) => props.buttonColor || "black"};
   border-radius: 5px;

@@ -34,6 +34,7 @@ function App() {
               roomId={roomId}
               setRoomId={setRoomId}
               alias={alias}
+              setAlias={setAlias}
             />
           }
         />

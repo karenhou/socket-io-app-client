@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import Chat from "../Chat";
+import Chat from "./Chat";
 import Game from "./Game";
-import GameRoomStats from "./GameRoomStats";
+import StatsBar from "./StatsBar";
 import { useLocation } from "react-router-dom";
 
 const DividedContainer = styled.div`
@@ -15,16 +15,41 @@ const GameRoomContainer = styled.div`
   display: flex;
 `;
 
-const GameRoom = ({ socket, roomId, setRoomId, alias }) => {
-  console.log("first", roomId);
+const GameRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
   const location = useLocation();
-  console.log("location", location);
+
+  useEffect(() => {
+    let room, currentAlias;
+    if (alias) {
+      currentAlias = alias;
+      localStorage.setItem("alias", alias);
+    } else {
+      if (localStorage.getItem("alias")) {
+        currentAlias = localStorage.getItem("alias");
+      }
+    }
+
+    if (!roomId) {
+      room = location.pathname.split(":")[1];
+      setRoomId(room);
+    } else {
+      room = roomId;
+    }
+
+    setAlias(currentAlias);
+    console.log("gameroom b4 joinroom", currentAlias);
+    socket.emit("join_room", {
+      roomId: room,
+      alias: currentAlias,
+    });
+  }, []);
+
   return (
     <>
-      <GameRoomStats socket={socket} roomId={roomId} />
+      <StatsBar socket={socket} roomId={roomId} />
       <GameRoomContainer>
         <DividedContainer>
-          <Game socket={socket} roomId={roomId} setRoomId={setRoomId} />
+          <Game socket={socket} roomId={roomId} alias={alias} />
         </DividedContainer>
         <DividedContainer>
           <Chat socket={socket} roomId={roomId} alias={alias}></Chat>
