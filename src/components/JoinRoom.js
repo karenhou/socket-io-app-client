@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Title from "./Title";
 import { useNavigate } from "react-router-dom";
+import ActionButton from "./ActionButton";
 
 const JoinRoomContainer = styled.div`
   display: flex;
@@ -17,14 +18,16 @@ const RowContainer = styled.div`
   margin-top: 8px;
 `;
 
-export const ActionButton = styled.button`
-  padding: 4px;
-  background-color: ${(props) => props.buttonColor || "flex-start"};
-  border-radius: 5px;
-  color: white;
-  border: none;
-  width: 80px;
-`;
+const InputComponent = ({ placeholder, value, setValue }) => {
+  return (
+    <input
+      placeholder={placeholder}
+      type="text"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+};
 
 const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
   const navigate = useNavigate();
@@ -42,7 +45,6 @@ const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
       alias,
     });
 
-    setRoomId("");
     navigate(`/game-room:${tmpRoomId}`);
   };
 
@@ -50,23 +52,23 @@ const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
     <JoinRoomContainer>
       <Title title="Join Room" />
       <RowContainer>
-        <input
-          placeholder="Your Names..."
-          type="text"
+        <InputComponent
+          placeholder="Your name.."
           value={alias}
-          onChange={(e) => setAlias(e.target.value)}
+          setValue={setAlias}
         />
-        <input
-          placeholder="Rooms#..."
-          type="text"
+        <InputComponent
+          placeholder="Room ID..."
           value={roomId}
-          onChange={(e) => setRoomId(e.target.value)}
+          setValue={setRoomId}
         />
       </RowContainer>
       <RowContainer>
-        <ActionButton buttonColor="green" onClick={() => handleJoinRoom()}>
-          Join
-        </ActionButton>
+        <ActionButton
+          buttonColor="green"
+          text="Join"
+          actionFn={handleJoinRoom}
+        />
       </RowContainer>
     </JoinRoomContainer>
   );

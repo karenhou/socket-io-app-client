@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import React, { useState } from "react";
 import JoinRoom from "./components/JoinRoom";
 import { Routes, Route } from "react-router-dom";
-import GameRoom from "./components/GameRoom";
+import GameRoom from "./components/GameRoom/GameRoom";
 
 const socket = io.connect("http://localhost:3001");
 

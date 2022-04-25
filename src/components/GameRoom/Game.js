@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GuessingGame from "./GuessingGame";
-import Title from "./Title";
+import Title from "../Title";
 
 const Games = ({ socket, roomId }) => {
   const [guessNum, setGuessNum] = useState("");
@@ -28,7 +28,7 @@ const Games = ({ socket, roomId }) => {
 
   return (
     <div>
-      <Title title="Guessing Game" />
+      <Title title="Game" />
       <button onClick={() => handleStartGame()}>Start</button>
 
       {chartInfo &&

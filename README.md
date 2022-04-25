@@ -19,23 +19,6 @@ npm start
 - Styled-component
 - Socket-io.client
 
-## Server
-
-This is where the socket io server is located
-
-### To run application
-
-```
-npm i
-npm start
-```
-
-### Build With
-
-- nodejs
-- expressjs
-- socket-io
-
 ## TODOs
 
 - strict a room to have 2 person
