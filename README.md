@@ -23,3 +23,6 @@ npm start
 
 - strict a room to have 2 person
 - clean code / refactor a bit
+- game room host / others
+- host can reset game, kick people
+- room to add secret key

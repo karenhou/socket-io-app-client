@@ -63,7 +63,6 @@ const GuessingGame = ({
 
   const handleGuess = (guess) => {
     const userGuess = guess.split("").map((x) => parseInt(x));
-    console.log("useGuess", userGuess);
 
     let result = compareResult(userGuess, targetNumber);
 

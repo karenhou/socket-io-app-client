@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import ActionButton from "../ActionButton";
+import InputComponent from "../InputComponent";
 import Title from "../Title";
 
 const ChatContainer = styled.div`
@@ -37,18 +39,11 @@ const InputBox = styled.div`
   }
 `;
 
-const SendButton = styled.button`
-  padding: 4px;
-  background-color: green;
-  color: white;
-  border: none;
-  height: 100%;
-`;
-
 const FlexBox = styled.div`
   display: flex;
   justify-content: ${(props) => props.flexDirection || "flex-start"};
   align-items: center;
+  margin-bottom: 8px;
 `;
 
 const NameCircle = styled.div`
@@ -62,6 +57,15 @@ const NameCircle = styled.div`
   text-align: center;
 `;
 
+const MsgItems = ({ flexDirection, alias, message, inputColor }) => {
+  return (
+    <FlexBox flexDirection={flexDirection}>
+      <NameCircle inputColor={inputColor}>{alias}</NameCircle>
+      <div>{message}</div>
+    </FlexBox>
+  );
+};
+
 const Chat = ({ socket, roomId, alias }) => {
   const [message, setMessage] = useState("");
   const [msgReceived, setMsgReceived] = useState([]);
@@ -69,19 +73,11 @@ const Chat = ({ socket, roomId, alias }) => {
 
   const sendMessage = () => {
     console.log("messge clicked");
-    if (msgReceived.length === 0) {
-      let obj = { message, socketId: socket.id, alias };
-      let tmp = [obj];
-
-      setMsgReceived([...tmp]);
-    } else {
-      setMsgReceived((oldMsg) => {
-        let temp = [];
-        temp.push({ message, socketId: socket.id, alias });
-        console.log("before ", oldMsg, temp);
-        return [...oldMsg, ...temp];
-      });
-    }
+    setMsgReceived((oldMsg) => {
+      let temp = [];
+      temp.push({ message, socketId: socket.id, alias });
+      return [...oldMsg, ...temp];
+    });
     socket.emit("send_message", {
       message,
       roomId,
@@ -93,7 +89,7 @@ const Chat = ({ socket, roomId, alias }) => {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      console.log("incoming msg ", data);
+      console.log("receive_message ", data);
 
       setMsgReceived((oldMsg) => {
         let mySet = new Set([...oldMsg, data]);
@@ -113,39 +109,38 @@ const Chat = ({ socket, roomId, alias }) => {
   return (
     <ChatContainer>
       <Title title="Chat" />
-
       <ChatBoxContainer>
         {systemMsg && <div>{systemMsg}</div>}
         <MsgContainer>
           {msgReceived &&
             msgReceived.map((msg, index) => {
               return msg.socketId === socket.id ? (
-                <FlexBox key={index} flexDirection="flex-end">
-                  <NameCircle inputColor="orange">{msg.alias}</NameCircle>
-                  <div>{msg.message}</div>
-                </FlexBox>
+                <MsgItems
+                  key={index}
+                  flexDirection="flex-end"
+                  alias={msg.alias}
+                  inputColor="orange"
+                  message={msg.message}
+                />
               ) : (
-                <FlexBox key={index}>
-                  <NameCircle inputColor="#83d883">{msg.alias}</NameCircle>
-                  <div>{msg.message}</div>
-                </FlexBox>
+                <MsgItems
+                  key={index}
+                  alias={msg.alias}
+                  inputColor="#83d883"
+                  message={msg.message}
+                />
               );
             })}
         </MsgContainer>
         <InputRow>
           <InputBox>
-            <input
-              placeholder="Message..."
-              type="text"
+            <InputComponent
+              placeholder="Message"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              setValue={setMessage}
             />
           </InputBox>
-          <div>
-            <SendButton type="button" onClick={() => sendMessage()}>
-              Send msg
-            </SendButton>
-          </div>
+          <ActionButton text="Send" actionFn={sendMessage} buttonColor="blue" />
         </InputRow>
       </ChatBoxContainer>
     </ChatContainer>

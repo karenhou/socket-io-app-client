@@ -5,7 +5,7 @@ import ActionButton from "../ActionButton";
 
 const GameRoomStatusRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   justify-items: center;
   margin-left: 40px;
   margin-right: 40px;
@@ -14,16 +14,14 @@ const GameRoomStatusRow = styled.div`
   border-radius: 10px;
 `;
 
-const StatsBar = ({ socket, roomId }) => {
+const StatsBar = ({ socket, roomId, alias }) => {
   const [userCount, setUserCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("num_connection", (data) => {
-      // console.log("num_connection in this room", data);
       setUserCount(data.userCount);
     });
-    console.log("roomId StatsBar", roomId);
   }, [socket]);
 
   const handleLeaveRoom = () => {
@@ -35,6 +33,7 @@ const StatsBar = ({ socket, roomId }) => {
   return (
     <GameRoomStatusRow>
       <div>Gameroom ID: {!roomId ? "N/A" : roomId}</div>
+      <div>Your Name: {!alias ? "N/A" : alias}</div>
       <div>{userCount ? userCount : 0} users in the room</div>
       <ActionButton
         buttonColor="orange"

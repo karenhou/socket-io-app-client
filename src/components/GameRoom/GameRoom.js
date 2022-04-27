@@ -37,7 +37,6 @@ const GameRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
     }
 
     setAlias(currentAlias);
-    console.log("gameroom b4 joinroom", currentAlias);
     socket.emit("join_room", {
       roomId: room,
       alias: currentAlias,
@@ -46,7 +45,7 @@ const GameRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
 
   return (
     <>
-      <StatsBar socket={socket} roomId={roomId} />
+      <StatsBar socket={socket} roomId={roomId} alias={alias} />
       <GameRoomContainer>
         <DividedContainer>
           <Game socket={socket} roomId={roomId} alias={alias} />

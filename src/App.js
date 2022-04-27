@@ -1,7 +1,7 @@
 import "./App.css";
 import io from "socket.io-client";
 import React, { useState } from "react";
-import JoinRoom from "./components/JoinRoom";
+import JoinRoom from "./components/JoinPage/Join";
 import { Routes, Route } from "react-router-dom";
 import GameRoom from "./components/GameRoom/GameRoom";
 

@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Title from "./Title";
+import Title from "../Title";
 import { useNavigate } from "react-router-dom";
-import ActionButton from "./ActionButton";
-import InputComponent from "./InputComponent";
+import ActionButton from "../ActionButton";
+import InputComponent from "../InputComponent";
 
 const JoinRoomContainer = styled.div`
   display: flex;
@@ -17,14 +17,14 @@ const RowContainer = styled.div`
   gap: 2px;
   grid-template-columns: 1fr;
   margin-top: 8px;
+  margin-bottom: 8px;
 `;
 
-const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
+const Join = ({ socket, roomId, setRoomId, alias, setAlias }) => {
   const navigate = useNavigate();
 
   const handleJoinRoom = () => {
     let tmpRoomId = roomId;
-    console.log("tmpRoomId ", tmpRoomId);
     if (tmpRoomId === "") {
       tmpRoomId = 3; //default room #3
       setRoomId(tmpRoomId);
@@ -53,15 +53,9 @@ const JoinRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
           setValue={setRoomId}
         />
       </RowContainer>
-      <RowContainer>
-        <ActionButton
-          buttonColor="green"
-          text="Join"
-          actionFn={handleJoinRoom}
-        />
-      </RowContainer>
+      <ActionButton buttonColor="green" text="Join" actionFn={handleJoinRoom} />
     </JoinRoomContainer>
   );
 };
 
-export default JoinRoom;
+export default Join;
