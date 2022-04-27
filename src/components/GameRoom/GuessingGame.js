@@ -50,13 +50,36 @@ const checkEndGame = (result) => {
   return result[0] === 4;
 };
 
-const GuessingGame = ({
-  targetNumber,
-  socket,
-  roomId,
-  alias,
-  setChartInfo,
-}) => {
+const GamingInfo = ({ hasWon, targetNumber, guessRecord }) => {
+  if (hasWon === 1) {
+    return <ResultText text="You won" />;
+  }
+
+  if (hasWon === 2) {
+    return (
+      <ResultText
+        text={`You have used all your guesses. You lost, Answer is ${targetNumber.join(
+          ""
+        )}`}
+      />
+    );
+  }
+
+  return (
+    <>
+      <h4>Guess Count Left: {10 - guessRecord.length}</h4>
+      {guessRecord.length > 0 && (
+        <GuessingRecordContainer>
+          {guessRecord.map((guess, index) => {
+            return <li key={index}>{guess}</li>;
+          })}
+        </GuessingRecordContainer>
+      )}
+    </>
+  );
+};
+
+const GuessingGame = ({ targetNumber, socket, roomId, alias }) => {
   const [guessRecord, setGuessRecord] = useState([]);
   const [inputGuess, setInputGuess] = useState("");
   const [hasWon, setHasWon] = useState(0);
@@ -103,7 +126,6 @@ const GuessingGame = ({
       setInputGuess("");
       setGuessRecord([]);
       setHasWon(0);
-      setChartInfo("");
     });
   }, []);
 
@@ -134,30 +156,11 @@ const GuessingGame = ({
         />
       </div>
 
-      {hasWon === 2 ? (
-        <ResultText
-          text={`You have used all your guesses. You lost, Answer is ${targetNumber.join(
-            ""
-          )}`}
-        />
-      ) : (
-        <>
-          {hasWon === 1 ? (
-            <ResultText text="You won" />
-          ) : (
-            <>
-              <h4>Guess Count Left: {10 - guessRecord.length}</h4>
-              {guessRecord.length > 0 && (
-                <GuessingRecordContainer>
-                  {guessRecord.map((guess, index) => {
-                    return <li key={index}>{guess}</li>;
-                  })}
-                </GuessingRecordContainer>
-              )}
-            </>
-          )}
-        </>
-      )}
+      <GamingInfo
+        hasWon={hasWon}
+        targetNumber={targetNumber}
+        guessRecord={guessRecord}
+      />
     </>
   );
 };

@@ -51,7 +51,7 @@ const GameRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
           <Game socket={socket} roomId={roomId} alias={alias} />
         </DividedContainer>
         <DividedContainer>
-          <Chat socket={socket} roomId={roomId} alias={alias}></Chat>
+          <Chat socket={socket} roomId={roomId} alias={alias} />
         </DividedContainer>
       </GameRoomContainer>
     </>

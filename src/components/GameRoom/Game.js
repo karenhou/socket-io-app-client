@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 const SubTitle = styled.div`
   color: gray;
-  /* margin-bottom: 8px; */
 `;
 
 const ChartInfoContainer = styled.div`
@@ -25,6 +24,7 @@ const Game = ({ socket, roomId, alias }) => {
     socket.on("targeted_number", (data) => {
       console.log("targeted_number", data);
       setTargetNumber(data.targetNumber);
+      setChartInfo("");
     });
 
     socket.on("game_result", (data) => {
@@ -76,7 +76,6 @@ const Game = ({ socket, roomId, alias }) => {
           socket={socket}
           roomId={roomId}
           alias={alias}
-          setChartInfo={setChartInfo}
         />
       )}
     </div>
