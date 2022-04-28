@@ -104,6 +104,14 @@ const Chat = ({ socket, roomId, alias }) => {
         setSystemMsg("");
       }, 2000);
     });
+
+    socket.on("who_left", (data) => {
+      setSystemMsg(`${data.alias} lefted the room`);
+
+      setTimeout(() => {
+        setSystemMsg("");
+      }, 2000);
+    });
   }, [socket]);
 
   return (

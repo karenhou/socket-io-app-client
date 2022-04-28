@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Title from "../Title";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,24 @@ const RowContainer = styled.div`
   margin-bottom: 8px;
 `;
 
-const Join = ({ socket, roomId, setRoomId, alias, setAlias }) => {
+const ErrorText = styled.div`
+  color: red;
+`;
+
+const Join = ({
+  socket,
+  roomId,
+  setRoomId,
+  alias,
+  setAlias,
+  roomPassword,
+  setRoomPassword,
+}) => {
   const navigate = useNavigate();
+  const [systemMsg, setSystemMsg] = useState("");
 
   const handleJoinRoom = () => {
+    setSystemMsg("");
     let tmpRoomId = roomId;
     if (tmpRoomId === "") {
       tmpRoomId = 3; //default room #3
@@ -33,10 +47,21 @@ const Join = ({ socket, roomId, setRoomId, alias, setAlias }) => {
     socket.emit("join_room", {
       roomId: tmpRoomId,
       alias,
+      roomPassword,
+      socketId: socket.id,
     });
-
-    navigate(`/game-room:${tmpRoomId}`);
   };
+
+  useEffect(() => {
+    socket.on("join_result", (data) => {
+      console.log("join_result", data);
+      if (data.msg === "Wrong password") {
+        setSystemMsg(data.msg);
+      } else {
+        navigate(`/game-room:${data.roomId}`);
+      }
+    });
+  }, [socket]);
 
   return (
     <JoinRoomContainer>
@@ -52,8 +77,14 @@ const Join = ({ socket, roomId, setRoomId, alias, setAlias }) => {
           value={roomId}
           setValue={setRoomId}
         />
+        <InputComponent
+          placeholder="Password for the room..."
+          value={roomPassword}
+          setValue={setRoomPassword}
+        />
       </RowContainer>
       <ActionButton buttonColor="green" text="Join" actionFn={handleJoinRoom} />
+      {systemMsg && <ErrorText>{systemMsg}</ErrorText>}
     </JoinRoomContainer>
   );
 };

@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Chat from "./Chat";
 import Game from "./Game";
 import StatsBar from "./StatsBar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DividedContainer = styled.div`
   flex: 1;
@@ -15,37 +15,65 @@ const GameRoomContainer = styled.div`
   display: flex;
 `;
 
-const GameRoom = ({ socket, roomId, setRoomId, alias, setAlias }) => {
-  const location = useLocation();
+const GameRoom = ({
+  socket,
+  roomId,
+  setRoomId,
+  alias,
+  setAlias,
+  roomPassword,
+  roomDetails,
+}) => {
+  // const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    let room, currentAlias;
-    if (alias) {
-      currentAlias = alias;
-      localStorage.setItem("alias", alias);
-    } else {
-      if (localStorage.getItem("alias")) {
-        currentAlias = localStorage.getItem("alias");
-      }
-    }
-
-    if (!roomId) {
-      room = location.pathname.split(":")[1];
-      setRoomId(room);
-    } else {
-      room = roomId;
-    }
-
-    setAlias(currentAlias);
-    socket.emit("join_room", {
-      roomId: room,
-      alias: currentAlias,
+    socket.on("closed_room", (data) => {
+      console.log("first closed_room", data);
+      navigate("/");
     });
+  }, [socket]);
+
+  useEffect(() => {
+    //comment off, until better solution for reconnecting
+    // let room, currentAlias, password;
+    // if (alias) {
+    //   currentAlias = alias;
+    //   localStorage.setItem("alias", alias);
+    // }
+    // if (roomPassword) {
+    //   password = roomPassword;
+    //   localStorage.setItem("password", roomPassword);
+    // }
+    // if (localStorage.getItem("alias")) {
+    //   currentAlias = localStorage.getItem("alias");
+    // }
+    // if (localStorage.getItem("password")) {
+    //   password = localStorage.getItem("password");
+    // }
+    // if (!roomId) {
+    //   room = location.pathname.split(":")[1];
+    //   setRoomId(room);
+    // } else {
+    //   room = roomId;
+    // }
+    // setAlias(currentAlias);
+    // socket.emit("join_room", {
+    //   roomId: room,
+    //   alias: currentAlias,
+    //   roomPassword: password,
+    //   socketId: socket.id,
+    // });
   }, []);
 
   return (
     <>
-      <StatsBar socket={socket} roomId={roomId} alias={alias} />
+      <StatsBar
+        socket={socket}
+        roomId={roomId}
+        alias={alias}
+        roomDetails={roomDetails}
+      />
       <GameRoomContainer>
         <DividedContainer>
           <Game socket={socket} roomId={roomId} alias={alias} />

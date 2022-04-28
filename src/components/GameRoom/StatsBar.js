@@ -5,7 +5,7 @@ import ActionButton from "../ActionButton";
 
 const GameRoomStatusRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   margin-left: 40px;
   margin-right: 40px;
@@ -14,32 +14,40 @@ const GameRoomStatusRow = styled.div`
   border-radius: 10px;
 `;
 
-const StatsBar = ({ socket, roomId, alias }) => {
-  const [userCount, setUserCount] = useState(0);
+const StatsBar = ({ socket, roomId, alias, roomDetails }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    socket.on("num_connection", (data) => {
-      setUserCount(data.userCount);
-    });
-  }, [socket]);
 
   const handleLeaveRoom = () => {
     localStorage.removeItem("alias");
-    socket.emit("leave_room", { roomId });
+    socket.emit("leave_room", { roomId, alias, socketId: socket.id });
     navigate("/");
+  };
+
+  const handleCloseRoom = () => {
+    socket.emit("close_room", { roomId });
   };
 
   return (
     <GameRoomStatusRow>
       <div>Gameroom ID: {!roomId ? "N/A" : roomId}</div>
       <div>Your Name: {!alias ? "N/A" : alias}</div>
-      <div>{userCount ? userCount : 0} users in the room</div>
-      <ActionButton
-        buttonColor="orange"
-        text="Leave"
-        actionFn={handleLeaveRoom}
-      />
+      <div>
+        {roomDetails && roomDetails.userCount ? roomDetails.userCount : 0} users
+        in the room
+      </div>
+      {socket.id === roomDetails.roomHost ? (
+        <ActionButton
+          buttonColor="black"
+          text="Close"
+          actionFn={handleCloseRoom}
+        />
+      ) : (
+        <ActionButton
+          buttonColor="orange"
+          text="Leave"
+          actionFn={handleLeaveRoom}
+        />
+      )}
     </GameRoomStatusRow>
   );
 };
