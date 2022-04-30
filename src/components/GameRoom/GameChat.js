@@ -112,6 +112,12 @@ const Chat = ({ socket, roomId, alias }) => {
         setSystemMsg("");
       }, 2000);
     });
+
+    return () => {
+      socket.off("receive_message_room");
+      socket.off("who_join");
+      socket.off("who_left");
+    };
   }, [socket]);
 
   return (
