@@ -68,6 +68,18 @@ const SideMenuActionContainer = styled.div`
   align-self: flex-end;
 `;
 
+const EmptySelectedSocketContainer = styled.div`
+  margin: auto;
+  height: 300px;
+  display: flex;
+  align-items: center;
+
+  h3 {
+    color: gray;
+    font-style: italic;
+  }
+`;
+
 const ChatRecordContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -124,7 +136,9 @@ const MsgItems = ({ flexDirection, msg, inputColor, noNameCircle, left }) => {
         ""
       ) : (
         <NameCircleContainer>
-          <NameCircle inputColor={inputColor}>{msg.from.charAt(0)}</NameCircle>
+          <NameCircle inputColor={inputColor}>
+            {msg.fromUser.charAt(0)}
+          </NameCircle>
         </NameCircleContainer>
       )}
 
@@ -140,7 +154,7 @@ const ChatRoom = ({ socket }) => {
   const [inputMsg, setInputMsg] = useState("");
   const [chatRecord, setChatRecord] = useState([]);
   const [userList, setUserList] = useState([]);
-  const [selectedSocket, setSelectedSocket] = useState("");
+  const [selectedSocket, setSelectedSocket] = useState([]);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -152,7 +166,7 @@ const ChatRoom = ({ socket }) => {
 
   const handleUserClicked = (user) => {
     console.log("handleUserClicked ", user);
-    setSelectedSocket(user.socketId);
+    setSelectedSocket([user.name, user.socketId]);
   };
 
   const handleSendMsg = () => {
@@ -160,8 +174,9 @@ const ChatRoom = ({ socket }) => {
     const msgData = {
       message: inputMsg,
       from: socket.id,
+      fromUser: selectedSocket[0],
       timestamp: new Date().getTime(),
-      to: selectedSocket,
+      to: selectedSocket[1],
     };
     socket.emit("send_message_private", msgData);
     delete msgData.to;
@@ -264,41 +279,42 @@ const ChatRoom = ({ socket }) => {
       </SideMenuContainer>
 
       <MsgContainer>
-        <ChatRecordContainer>
-          {selectedSocket === "" ? (
+        {selectedSocket.length === 0 ? (
+          <EmptySelectedSocketContainer>
             <h3>Select a user to chat</h3>
-          ) : (
-            <h3>{selectedSocket}</h3>
-          )}
-          {chatRecord && (
-            <>
-              {chatRecord.map((chat) => {
-                const parsed = JSON.parse(chat);
-                console.log("chat ", parsed, socket.id);
-                if (parsed.from === socket.id) {
-                  //i said
-                  return (
-                    <MsgItems
-                      key={parsed.timestamp}
-                      flexDirection="flex-end"
-                      inputColor="orange"
-                      msg={parsed}
-                      noNameCircle
-                    />
-                  );
-                } else
-                  return (
-                    <MsgItems
-                      key={parsed.timestamp}
-                      inputColor="#83d883"
-                      msg={parsed}
-                      left="baseline"
-                    />
-                  );
-              })}
-            </>
-          )}
-        </ChatRecordContainer>
+          </EmptySelectedSocketContainer>
+        ) : (
+          <ChatRecordContainer>
+            <h3>{selectedSocket[0]}</h3>
+            {chatRecord && (
+              <>
+                {chatRecord.map((chat) => {
+                  const parsed = JSON.parse(chat);
+                  console.log("chat ", parsed, socket.id);
+                  if (parsed.from === socket.id) {
+                    //i said
+                    return (
+                      <MsgItems
+                        key={parsed.timestamp}
+                        flexDirection="flex-end"
+                        msg={parsed}
+                        noNameCircle
+                      />
+                    );
+                  } else
+                    return (
+                      <MsgItems
+                        key={parsed.timestamp}
+                        inputColor="orange"
+                        msg={parsed}
+                        left="baseline"
+                      />
+                    );
+                })}
+              </>
+            )}
+          </ChatRecordContainer>
+        )}
 
         <InputBoxContainer>
           <textarea
@@ -312,7 +328,7 @@ const ChatRoom = ({ socket }) => {
               bgColor="#ffc200"
               onClick={() => handleSendMsg()}
               textColor="white"
-              disabled={selectedSocket === ""}>
+              disabled={selectedSocket.length === 0}>
               Send
             </SendMsgButton>
           </ButtonContainer>
