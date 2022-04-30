@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import JoinRoom from "./components/JoinPage/Join";
 import { Routes, Route } from "react-router-dom";
 import GameRoom from "./components/GameRoom/GameRoom";
+import ChatRoom from "./components/ChatRoom/ChatRoom";
+import Login from "./components/Login/Login";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -24,7 +26,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route
-          path="/"
+          path="/join-room"
           element={
             <JoinRoom
               socket={socket}
@@ -51,6 +53,9 @@ function App() {
             />
           }
         />
+        <Route path="/chat" element={<ChatRoom socket={socket} />} />
+        <Route path="/" element={<Login socket={socket} />} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
     </div>
   );

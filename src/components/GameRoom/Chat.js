@@ -78,7 +78,7 @@ const Chat = ({ socket, roomId, alias }) => {
       temp.push({ message, socketId: socket.id, alias });
       return [...oldMsg, ...temp];
     });
-    socket.emit("send_message", {
+    socket.emit("send_message_room", {
       message,
       roomId,
       socketId: socket.id,
@@ -88,8 +88,8 @@ const Chat = ({ socket, roomId, alias }) => {
   };
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      console.log("receive_message ", data);
+    socket.on("receive_message_room", (data) => {
+      console.log("receive_message_room", data);
 
       setMsgReceived((oldMsg) => {
         let mySet = new Set([...oldMsg, data]);
@@ -126,17 +126,11 @@ const Chat = ({ socket, roomId, alias }) => {
                 <MsgItems
                   key={index}
                   flexDirection="flex-end"
-                  alias={msg.alias}
                   inputColor="orange"
-                  message={msg.message}
+                  msg={msg}
                 />
               ) : (
-                <MsgItems
-                  key={index}
-                  alias={msg.alias}
-                  inputColor="#83d883"
-                  message={msg.message}
-                />
+                <MsgItems key={index} inputColor="#83d883" msg={msg} />
               );
             })}
         </MsgContainer>
