@@ -36,6 +36,11 @@ const Game = ({ socket, roomId, alias }) => {
         return [...mySet];
       });
     });
+
+    return () => {
+      socket.off("game_result");
+      socket.off("targeted_number");
+    };
   }, [socket]);
 
   return (

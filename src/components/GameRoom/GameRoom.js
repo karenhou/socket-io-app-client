@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Chat from "./Chat";
+import GameChat from "./GameChat";
 import Game from "./Game";
 import StatsBar from "./StatsBar";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,6 +32,10 @@ const GameRoom = ({
       console.log("first closed_room", data);
       navigate("/");
     });
+
+    return () => {
+      socket.off("closed_room");
+    };
   }, [socket]);
 
   useEffect(() => {
@@ -79,7 +83,7 @@ const GameRoom = ({
           <Game socket={socket} roomId={roomId} alias={alias} />
         </DividedContainer>
         <DividedContainer>
-          <Chat socket={socket} roomId={roomId} alias={alias} />
+          <GameChat socket={socket} roomId={roomId} alias={alias} />
         </DividedContainer>
       </GameRoomContainer>
     </>

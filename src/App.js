@@ -20,6 +20,10 @@ function App() {
       console.log("current_room_info", data);
       setRoomDetails(data);
     });
+
+    return () => {
+      socket.off("current_room_info");
+    };
   }, [socket]);
 
   return (

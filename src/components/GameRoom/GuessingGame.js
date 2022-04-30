@@ -127,7 +127,11 @@ const GuessingGame = ({ targetNumber, socket, roomId, alias }) => {
       setGuessRecord([]);
       setHasWon(0);
     });
-  }, []);
+
+    return () => {
+      socket.off("reset_game");
+    };
+  }, [socket]);
 
   const handleResetGame = () => {
     console.log("handleResetGame");

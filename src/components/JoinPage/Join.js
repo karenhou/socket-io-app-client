@@ -61,6 +61,10 @@ const Join = ({
         navigate(`/game-room:${data.roomId}`);
       }
     });
+
+    return () => {
+      socket.off("join_result");
+    };
   }, [socket]);
 
   return (
