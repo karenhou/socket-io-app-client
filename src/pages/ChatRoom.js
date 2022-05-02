@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UsersInfoList from "./UsersInfoList";
 import moment from "moment";
+import UsersInfoList from "../components/ChatRoom/UsersInfoList";
+
 const ChatRoomContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;

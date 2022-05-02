@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import GameChat from "./GameChat";
-import Game from "./Game";
-import StatsBar from "./StatsBar";
 import { useLocation, useNavigate } from "react-router-dom";
+import GameChat from "../components/GameRoom/GameChat";
+import Game from "../components/GameRoom/Game";
+import StatsBar from "../components/GameRoom/StatsBar";
 
 const DividedContainer = styled.div`
   flex: 1;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Title from "../Title";
 import { useNavigate } from "react-router-dom";
-import ActionButton from "../ActionButton";
-import InputComponent from "../InputComponent";
+import Title from "../components/Title";
+import ActionButton from "../components/ActionButton";
+import InputComponent from "../components/InputComponent";
 
 const JoinRoomContainer = styled.div`
   display: flex;

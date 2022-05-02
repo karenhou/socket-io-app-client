@@ -1,11 +1,11 @@
 import "./App.css";
 import io from "socket.io-client";
 import React, { useState, useEffect } from "react";
-import JoinRoom from "./components/JoinPage/Join";
 import { Routes, Route } from "react-router-dom";
-import GameRoom from "./components/GameRoom/GameRoom";
-import ChatRoom from "./components/ChatRoom/ChatRoom";
-import Login from "./components/Login/Login";
+import ChatRoom from "./pages/ChatRoom";
+import GameRoom from "./pages/GameRoom";
+import JoinRoom from "./pages/JoinRoom";
+import Login from "./pages/Login";
 
 const socket = io.connect("http://localhost:3001");
 

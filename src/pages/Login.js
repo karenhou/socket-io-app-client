@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import InputComponent from "../InputComponent";
-import ActionButton from "../ActionButton";
-import Title from "../Title";
+import InputComponent from "../components/InputComponent";
+import ActionButton from "../components/ActionButton";
+import Title from "../components/Title";
 
 const LoginContainer = styled.div`
   display: flex;
