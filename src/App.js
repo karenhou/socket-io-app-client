@@ -1,11 +1,14 @@
 import "./App.css";
 import io from "socket.io-client";
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChatRoom from "./pages/ChatRoom";
 import GameRoom from "./pages/GameRoom";
 import JoinRoom from "./pages/JoinRoom";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -27,8 +30,13 @@ function App() {
   }, [socket]);
 
   return (
-    <div className="App">
+    <Router>
       <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/chat" element={<ChatRoom socket={socket} />} />
+        <Route path="*" element={<div>404</div>} />
         <Route
           path="/join-room"
           element={
@@ -57,11 +65,8 @@ function App() {
             />
           }
         />
-        <Route path="/chat" element={<ChatRoom socket={socket} />} />
-        <Route path="/" element={<Login socket={socket} />} />
-        <Route path="*" element={<div>404</div>} />
       </Routes>
-    </div>
+    </Router>
   );
 }
 
