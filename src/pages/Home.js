@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const HomeContainer = styled.div`
   display: grid;
@@ -38,7 +39,7 @@ const RightGrid = styled.div`
 
 const LoginContainer = styled.div`
   width: 76%;
-  height: 50%;
+  min-height: 50%;
   margin: auto;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -46,9 +47,9 @@ const LoginContainer = styled.div`
   flex-direction: column;
   padding: 12px;
   align-items: center;
+  justify-content: center;
 
   h2 {
-    margin-top: 4.5rem;
     margin-bottom: 1rem;
   }
 `;
@@ -96,7 +97,10 @@ const StyldButton = styled.button`
 const Home = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+
   const navigate = useNavigate();
+  const { dispatch } = useContext(AuthContext);
 
   const handleEmailChange = (e) => {
     setInputEmail(e.target.value);
@@ -115,24 +119,31 @@ const Home = () => {
       password: inputPassword,
     };
 
+    dispatch({ type: "LOGIN_START" });
     //call API - login
     try {
       const res = await axios.post(
         "http://localhost:8900/api/auth/login",
         user
       );
-      console.log("login response", res);
       if (res.status === 200) {
-        //store JWT
-        localStorage.setItem("jwtToken", res.data.id_token);
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         setTimeout(() => {
-          navigate("/profile");
+          navigate("/profile", { replace: true });
         }, 1000);
       }
-    } catch (error) {
-      console.log("call login api failed ", error.response);
+    } catch (err) {
+      console.log("call login api failed ", err.response.data);
+      dispatch({ type: "LOGIN_FAILURE" });
+      setErrMsg(err.response.data.msg);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setErrMsg("");
+    }, 2000);
+  }, [errMsg]);
 
   return (
     <HomeContainer>
@@ -173,9 +184,20 @@ const Home = () => {
                 Login
               </StyldButton>
               <Link to="/register">
-                <StyldButton btnColor="#BEDBB5">Register</StyldButton>
+                <StyldButton type="button" btnColor="#BEDBB5">
+                  Register
+                </StyldButton>
               </Link>
             </ButtonContainer>
+            <p
+              style={{
+                color: "red",
+                textAlign: "center",
+                marginTop: "8px",
+                minHeight: "22.5px",
+              }}>
+              {errMsg}
+            </p>
           </form>
         </LoginContainer>
       </RightGrid>

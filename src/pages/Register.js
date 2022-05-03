@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ const RegisterContainer = styled.div`
 
 const RegisterBox = styled.div`
   width: 50%;
-  height: 40%;
+  min-height: 40%;
   margin: auto;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -21,9 +22,9 @@ const RegisterBox = styled.div`
   padding: 12px;
   align-items: center;
   background-color: #fff;
+  justify-content: center;
 
   h2 {
-    margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
 `;
@@ -70,11 +71,13 @@ const StyldButton = styled.button`
 
 const Register = () => {
   const [inputUserName, setInputUserName] = useState("username1");
-  const [inputEmail, setInputEmail] = useState("username@gmail.com");
+  const [inputEmail, setInputEmail] = useState("username1@gmail.com");
   const [inputPassword, setInputPassword] = useState("111111");
   const [inputPasswordConfirm, setInputPasswordConfirm] = useState("111111");
+  const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  const { dispatch } = useContext(AuthContext);
 
   const handleEmailChange = (e) => {
     setInputEmail(e.target.value);
@@ -105,6 +108,7 @@ const Register = () => {
       username: inputUserName,
     };
 
+    dispatch({ type: "REGISTER_START" });
     //call API - register
     try {
       const res = await axios.post(
@@ -113,12 +117,21 @@ const Register = () => {
       );
       console.log("register response", res);
       if (res.status === 200) {
-        navigate("/");
+        dispatch({ type: "REGISTER_SUCCESS", payload: res.data });
+        navigate("/profile", { replace: true });
       }
-    } catch (error) {
-      console.log("call reigster api failed ", error.response);
+    } catch (err) {
+      console.log("call reigster api failed ", err.response.data);
+      dispatch({ type: "REGISTER_FAILURE" });
+      setErrMsg(err.response.data.msg);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setErrMsg("");
+    }, 2000);
+  }, [errMsg]);
 
   return (
     <RegisterContainer>
@@ -179,6 +192,15 @@ const Register = () => {
               <StyldButton btnColor="#d89696">Cancel</StyldButton>
             </Link>
           </ButtonContainer>
+          <p
+            style={{
+              color: "red",
+              textAlign: "center",
+              marginTop: "8px",
+              minHeight: "22.5px",
+            }}>
+            {errMsg}
+          </p>
         </form>
       </RegisterBox>
     </RegisterContainer>
