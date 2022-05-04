@@ -8,7 +8,7 @@ const HomeContainer = styled.div`
   justify-content: center;
   min-height: 150vh;
   display: grid;
-  grid-template-rows: 2fr 10fr;
+  grid-template-rows: 3fr 10fr;
   grid-auto-columns: 1fr;
   width: 100%;
 `;
