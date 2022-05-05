@@ -6,6 +6,8 @@ import ContainerWrapper from "../components/ChatLobby/ContainerWrapper";
 import MsgSection from "../components/ChatLobby/MsgSection";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { AuthContext } from "../context/AuthContext";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:3001");
 
 const ChatLobbyContainer = styled.div`
   display: grid;
@@ -24,21 +26,23 @@ const ChattingContainer = styled(ContainerWrapper)`
   }
 `;
 
-const ChatLobby = ({ socket }) => {
+const ChatLobby = () => {
   const {
     user: { user },
   } = useContext(AuthContext);
+
+  console.log("my socket ", socket.id);
 
   useEffect(() => {
     socket.emit("addUser", {
       socketId: socket.id,
       username: user.username,
     });
-  }, [user]);
+  }, [socket, user]);
 
   return (
     <ChatLobbyContainer>
-      <Sidebar />
+      <Sidebar socket={socket} />
       <ChattingContainer>
         <h1>Chat Lobby</h1>
         <MsgSection socket={socket} />

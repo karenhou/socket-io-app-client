@@ -50,7 +50,7 @@ const LogoutButton = styled.button`
   }
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ socket }) => {
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
 
@@ -64,6 +64,10 @@ const Sidebar = () => {
     } catch (error) {
       dispatch({ type: "LOGOUT_FAILURE", payload: error });
     }
+
+    socket.emit("removeUser", {
+      socketId: socket.id,
+    });
   };
 
   return (

@@ -1,5 +1,5 @@
 import "./App.css";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -17,27 +17,27 @@ import Profile from "./pages/Profile";
 import { AuthContext } from "./context/AuthContext";
 import ChatLobby from "./pages/ChatLobby";
 
-const socket = io.connect("http://localhost:3001");
+// const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const [roomId, setRoomId] = useState("");
-  const [alias, setAlias] = useState("");
-  const [roomPassword, setRoomPassword] = useState("");
-  const [roomDetails, setRoomDetails] = useState("");
+  // const [roomId, setRoomId] = useState("");
+  // const [alias, setAlias] = useState("");
+  // const [roomPassword, setRoomPassword] = useState("");
+  // const [roomDetails, setRoomDetails] = useState("");
 
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log("App user ", user);
-    socket.on("current_room_info", (data) => {
-      console.log("current_room_info", data);
-      setRoomDetails(data);
-    });
+  // useEffect(() => {
+  //   console.log("App user ", user);
+  //   socket.on("current_room_info", (data) => {
+  //     console.log("current_room_info", data);
+  //     setRoomDetails(data);
+  //   });
 
-    return () => {
-      socket.off("current_room_info");
-    };
-  }, [socket]);
+  //   return () => {
+  //     socket.off("current_room_info");
+  //   };
+  // }, [socket]);
 
   return (
     <Router>
@@ -49,9 +49,7 @@ function App() {
         />
         <Route
           path="/chat-lobby"
-          element={
-            user ? <ChatLobby socket={socket} /> : <Navigate to="/" replace />
-          }
+          element={user ? <ChatLobby /> : <Navigate to="/" replace />}
         />
         {/* <Route
           path="/chat"
