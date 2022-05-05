@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ContainerWrapper from "./ContainerWrapper";
 
@@ -28,7 +28,21 @@ const OnlineDot = styled.div`
   align-self: center;
 `;
 
-const ActiveUserList = ({ onlineUsers }) => {
+const ActiveUserList = ({ socket }) => {
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  useEffect(() => {
+    socket.on("getUsers", (data) => {
+      console.log("getUsers", data);
+      const filteredRes = data.filter((user) => user.socketId !== socket.id);
+      setOnlineUsers(filteredRes);
+    });
+
+    return () => {
+      socket.off("getUsers");
+    };
+  }, [socket, onlineUsers]);
+
   return (
     <ActiveUserContainer>
       <h3>Active Users</h3>

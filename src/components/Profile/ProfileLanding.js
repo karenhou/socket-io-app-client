@@ -89,7 +89,7 @@ const ProfileLanding = () => {
         <h1>Name</h1>
         <h3>Other info</h3>
         <TextAreaContainer>
-          <WordOfTheDay defaultValue="">What's on your mind?</WordOfTheDay>
+          <WordOfTheDay defaultValue="What's on your mind?"></WordOfTheDay>
 
           <BtnRow>
             <Btn>Vent</Btn>
