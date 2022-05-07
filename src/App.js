@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import { AuthContext } from "./context/AuthContext";
 import ChatLobby from "./pages/ChatLobby";
+import GameLobby from "./pages/GameLobby";
 
 // const socket = io.connect("http://localhost:3001");
 
@@ -51,6 +52,11 @@ function App() {
           path="/chat-lobby"
           element={user ? <ChatLobby /> : <Navigate to="/" replace />}
         />
+        <Route
+          path="/game-lobby"
+          element={user ? <GameLobby /> : <Navigate to="/" replace />}
+        />
+
         {/* <Route
           path="/chat"
           element={
