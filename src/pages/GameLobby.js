@@ -26,18 +26,12 @@ const GameLobby = () => {
 
   useEffect(() => {
     console.log("gameSocket ", gameSocket.id);
-    gameSocket.on("game_connected", (data) => {
-      console.log("game_connected", data);
-    });
 
     gameSocket.on("create_game_result", (data) => {
       console.log("create_game_result", data);
       if (data.msg === "success") {
-        setRoomInfo({
-          roomNum: data.roomNum,
-          host: data.host,
-          password: data.password,
-        });
+        const { roomInfo } = data;
+        setRoomInfo(roomInfo);
         setConfigState(1);
       } else {
         console.log("room number exist failed");
@@ -48,22 +42,30 @@ const GameLobby = () => {
     gameSocket.on("join_game_result", (data) => {
       console.log("join_game_result", data);
       if (data.msg === "success") {
-        setRoomInfo({
-          roomNum: data.roomNum,
-          host: data.host,
-          password: data.password,
-        });
+        const { roomInfo } = data;
+        setRoomInfo(roomInfo);
         setConfigState(1);
       } else {
-        console.log("room number doesn't exist");
-        setErrMsg("Room number doesn't exist");
+        console.log(data.msg);
+        setErrMsg(data.msg);
+      }
+    });
+
+    gameSocket.on("roomInfoUpdate", (data) => {
+      console.log("roomInfoUpdate received", data);
+      if (data.msg === "success") {
+        const { roomInfo } = data;
+        setRoomInfo(roomInfo);
+      } else {
+        console.log(data.msg);
+        setErrMsg(data.msg);
       }
     });
 
     return () => {
-      gameSocket.off("game_connected");
       gameSocket.off("create_game_result");
       gameSocket.off("join_game_result");
+      gameSocket.off("roomInfoUpdate");
     };
   }, [gameSocket]);
 
@@ -80,7 +82,7 @@ const GameLobby = () => {
         {configState === 0 && (
           <ConfigGame gameSocket={gameSocket} errMsg={errMsg} />
         )}
-        {configState === 1 && (
+        {configState === 1 && roomInfo && (
           <GamingSession
             gameSocket={gameSocket}
             roomInfo={roomInfo}

@@ -35,6 +35,7 @@ const ErrText = styled.div`
 
 const JoinGameForm = ({ gameSocket, errMsg }) => {
   const [inputRoom, setInputRoom] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
   const {
     user: { user },
   } = useContext(AuthContext);
@@ -46,9 +47,8 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
 
     gameSocket.emit("join_game", {
       roomNum: inputRoom,
+      password: inputPassword,
       username: user.username,
-      // password: inputPassword,
-      // host: gameSocket.id,
     });
   };
 
@@ -67,10 +67,14 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
           />
         </InputRow>
 
-        {/* <InputRow>
+        <InputRow>
           <label htmlFor="">Password </label>
-          <input type="password" placeholder="Password for the room ..." />
-        </InputRow> */}
+          <input
+            type="password"
+            placeholder="Password for the room ..."
+            onChange={(e) => setInputPassword(e.target.value)}
+          />
+        </InputRow>
 
         <Btn type="button" onClick={handleJoinGameClicked}>
           Join

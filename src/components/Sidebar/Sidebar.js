@@ -79,6 +79,9 @@ const Sidebar = ({ socket }) => {
         <Link to="/chat-lobby">
           <CircleButton>C</CircleButton>
         </Link>
+        <Link to="/game-lobby">
+          <CircleButton>G</CircleButton>
+        </Link>
       </div>
 
       <LogoutButton onClick={handleLogoutBtnClicked}>Logout</LogoutButton>
