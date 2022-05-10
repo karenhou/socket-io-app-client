@@ -44,7 +44,7 @@ const SecondNav = styled.div`
 `;
 
 const GameConfigBody = styled.div`
-  width: 300px;
+  min-width: 300px;
   margin: auto;
   display: flex;
   flex-flow: column;

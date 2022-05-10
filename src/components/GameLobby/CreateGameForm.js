@@ -11,6 +11,7 @@ const FormBody = styled.form`
 const InputRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
+  gap: 0.8rem;
 `;
 
 const Btn = styled.div`
@@ -36,6 +37,7 @@ const ErrText = styled.div`
 const CreateGameForm = ({ gameSocket, errMsg }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [maxPlayerCount, setMaxPlayerCount] = useState(2);
   const {
     user: { user },
   } = useContext(AuthContext);
@@ -49,7 +51,12 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
       password: inputPassword,
       host: gameSocket.id,
       username: user.username,
+      maxPlayerCount,
     });
+  };
+
+  const handlePlayerCountChanged = (e) => {
+    setMaxPlayerCount(e.target.value);
   };
 
   return (
@@ -66,14 +73,21 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
         </InputRow>
 
         <InputRow>
-          <label htmlFor="" value={inputPassword}>
-            Password
-          </label>
+          <label htmlFor="">Password</label>
           <input
             type="password"
             placeholder="Password for the room ..."
             onChange={(e) => setInputPassword(e.target.value)}
           />
+        </InputRow>
+
+        <InputRow>
+          <label htmlFor="">Maximum Player</label>
+          <select name="maxPlayerCount" onChange={handlePlayerCountChanged}>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+          </select>
         </InputRow>
 
         <Btn type="button" onClick={handleCreateGameClicked}>
