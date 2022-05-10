@@ -1,7 +1,33 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import GuessingNumber from "./GuessingNumber";
 
+const NotificationAnimation = keyframes`
+  0%   {
+    bottom: -80px;
+  }
+  50%  {
+    bottom: 0;
+  }
+  75%  {
+    bottom: 0.4rem;
+  }
+  100% {
+    bottom: 0.5rem;
+  }
+`;
+
+const NotificationBox = styled.div`
+  width: 300px;
+  border-radius: 12px;
+  background-color: #fff;
+  position: fixed;
+  padding: 1rem;
+  right: 0.5rem;
+  opacity: 0.7;
+  border: 1px gray solid;
+  animation: ${NotificationAnimation} 2.5s ease-in-out infinite;
+`;
 const GameSessionContainer = styled.div`
   width: 80%;
   margin: 0 5rem;
@@ -82,6 +108,7 @@ const GamingSession = ({
   setRoomInfo,
 }) => {
   const [targetNumber, setTargetNumber] = useState("");
+  const [systemMsg, setSystemMsg] = useState("");
 
   const handleQuitGameClicked = () => {
     console.log("quit game clicked", roomInfo);
@@ -113,6 +140,7 @@ const GamingSession = ({
 
     gameSocket.on("roomInfoUpdate", (data) => {
       console.log("roomInfoUpdate received", data);
+      setSystemMsg(data.msg);
     });
 
     gameSocket.on("targeted_number", (data) => {
@@ -128,42 +156,50 @@ const GamingSession = ({
     };
   }, [gameSocket]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSystemMsg("");
+    }, 2500);
+  }, [systemMsg]);
+
   return (
-    <GameSessionContainer>
-      <GameRoomInfoGrid>
-        <GameRoomInfoHeader>Room States</GameRoomInfoHeader>
-        <div>Room Number: {roomInfo.roomNum}</div>
-        <div>Host: {roomInfo.host}</div>
-        {/* <p>Password: {roomInfo.password}</p> */}
+    <>
+      {systemMsg && <NotificationBox>{systemMsg}</NotificationBox>}
+      <GameSessionContainer>
+        <GameRoomInfoGrid>
+          <GameRoomInfoHeader>Room States</GameRoomInfoHeader>
+          <div>Room Number: {roomInfo.roomNum}</div>
+          <div>Host: {roomInfo.host}</div>
 
-        <RoomUserInfoDiv>
-          {roomInfo.currentUser?.map((user) => {
-            return (
-              <div key={user.userSocket}>
-                <DotDiv />
-                {user.name} ({user.userSocket})
-              </div>
-            );
-          })}
-        </RoomUserInfoDiv>
-        <ActionRow>
-          {!targetNumber && roomInfo.host === gameSocket.id && (
-            <StartBtn type="button" onClick={handleStartGameClicked}>
-              Start
-            </StartBtn>
-          )}
-          <QuitBtn onClick={handleQuitGameClicked}>Quit</QuitBtn>
-        </ActionRow>
-      </GameRoomInfoGrid>
+          <RoomUserInfoDiv>
+            {roomInfo.currentUser?.map((user) => {
+              return (
+                <div key={user.userSocket}>
+                  <DotDiv />
+                  {user.name} ({user.userSocket})
+                </div>
+              );
+            })}
+          </RoomUserInfoDiv>
+          <ActionRow>
+            {!targetNumber && roomInfo.host === gameSocket.id && (
+              <StartBtn type="button" onClick={handleStartGameClicked}>
+                Start
+              </StartBtn>
+            )}
+            <QuitBtn onClick={handleQuitGameClicked}>Quit</QuitBtn>
+          </ActionRow>
+        </GameRoomInfoGrid>
 
-      {targetNumber && (
-        <GuessingNumber
-          gameSocket={gameSocket}
-          roomInfo={roomInfo}
-          targetNumber={targetNumber}
-        />
-      )}
-    </GameSessionContainer>
+        {targetNumber && (
+          <GuessingNumber
+            gameSocket={gameSocket}
+            roomInfo={roomInfo}
+            targetNumber={targetNumber}
+          />
+        )}
+      </GameSessionContainer>
+    </>
   );
 };
 
