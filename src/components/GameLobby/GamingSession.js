@@ -82,6 +82,7 @@ const GamingSession = ({
   setRoomInfo,
 }) => {
   const [targetNumber, setTargetNumber] = useState("");
+
   const handleQuitGameClicked = () => {
     console.log("quit game clicked", roomInfo);
     gameSocket.emit("quit_game", {
@@ -146,7 +147,7 @@ const GamingSession = ({
           })}
         </RoomUserInfoDiv>
         <ActionRow>
-          {!targetNumber && (
+          {!targetNumber && roomInfo.host === gameSocket.id && (
             <StartBtn type="button" onClick={handleStartGameClicked}>
               Start
             </StartBtn>

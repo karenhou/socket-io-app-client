@@ -49,7 +49,7 @@ const GuessInputRow = styled.div`
 
 const BtnGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${(props) => (props.fullWidth ? "1fr 1fr" : "1fr")};
   gap: 0.5rem;
 `;
 
@@ -211,7 +211,7 @@ const GuessingNumber = ({ gameSocket, roomInfo, targetNumber }) => {
           onChange={(e) => setInputGuess(e.target.value)}
         />
 
-        <BtnGrid>
+        <BtnGrid fullWidth={roomInfo.host === gameSocket.id}>
           <GuessBtn
             disabled={inputGuess.length === 0 || hasWon !== 0}
             onClick={() => handleGuess(inputGuess)}
@@ -219,9 +219,11 @@ const GuessingNumber = ({ gameSocket, roomInfo, targetNumber }) => {
             Guess
           </GuessBtn>
 
-          <ResetBtn type="button" onClick={handleResetGame}>
-            Reset
-          </ResetBtn>
+          {roomInfo.host === gameSocket.id && (
+            <ResetBtn type="button" onClick={handleResetGame}>
+              Reset
+            </ResetBtn>
+          )}
         </BtnGrid>
       </GuessInputRow>
       <RecordContainer>
