@@ -13,7 +13,7 @@ const InputRow = styled.div`
   grid-template-columns: 2fr 3fr;
 `;
 
-const Btn = styled.div`
+const Btn = styled.button`
   padding: 4px 8px;
   border-radius: 5px;
   background-color: #fff;
@@ -24,6 +24,10 @@ const Btn = styled.div`
 
   :hover {
     cursor: pointer;
+
+    :disabled {
+      cursor: not-allowed;
+    }
   }
 `;
 
@@ -40,14 +44,22 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
     user: { user },
   } = useContext(AuthContext);
 
+  const handleInputRoom = (e) => {
+    setInputRoom(e.target.value.trim());
+  };
+
+  const handleInputPassword = (e) => {
+    setInputPassword(e.target.value.trim());
+  };
+
   const handleJoinGameClicked = (e) => {
     e.preventDefault();
     //TODO validation
     console.log("handleJoinGameClicked", inputRoom);
 
     gameSocket.emit("join_game", {
-      roomNum: inputRoom,
-      password: inputPassword,
+      roomNum: inputRoom.trim(),
+      password: inputPassword.trim(),
       username: user.username,
     });
   };
@@ -63,7 +75,7 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
           <input
             type="text"
             placeholder="Room Name"
-            onChange={(e) => setInputRoom(e.target.value)}
+            onChange={handleInputRoom}
           />
         </InputRow>
 
@@ -72,11 +84,14 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
           <input
             type="password"
             placeholder="Password for the room ..."
-            onChange={(e) => setInputPassword(e.target.value)}
+            onChange={handleInputPassword}
           />
         </InputRow>
 
-        <Btn type="button" onClick={handleJoinGameClicked}>
+        <Btn
+          type="button"
+          onClick={handleJoinGameClicked}
+          disabled={!inputRoom.trim() || !inputPassword.trim()}>
           Join
         </Btn>
         <ErrText>{errMsg}</ErrText>

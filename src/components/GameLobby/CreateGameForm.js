@@ -14,7 +14,7 @@ const InputRow = styled.div`
   gap: 0.8rem;
 `;
 
-const Btn = styled.div`
+const Btn = styled.button`
   padding: 4px 8px;
   border-radius: 5px;
   background-color: #fff;
@@ -25,6 +25,10 @@ const Btn = styled.div`
 
   :hover {
     cursor: pointer;
+
+    :disabled {
+      cursor: not-allowed;
+    }
   }
 `;
 
@@ -47,12 +51,20 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
     //TODO validation
     console.log("handleCreateGameClicked", inputRoom, inputPassword);
     gameSocket.emit("create_game", {
-      roomNum: inputRoom,
-      password: inputPassword,
+      roomNum: inputRoom.trim(),
+      password: inputPassword.trim(),
       host: gameSocket.id,
       username: user.username,
       maxPlayerCount,
     });
+  };
+
+  const handleInputRoom = (e) => {
+    setInputRoom(e.target.value.trim());
+  };
+
+  const handleInputPassword = (e) => {
+    setInputPassword(e.target.value.trim());
   };
 
   const handlePlayerCountChanged = (e) => {
@@ -68,7 +80,7 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
           <input
             type="text"
             placeholder="Room Name"
-            onChange={(e) => setInputRoom(e.target.value)}
+            onChange={handleInputRoom}
           />
         </InputRow>
 
@@ -77,7 +89,7 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
           <input
             type="password"
             placeholder="Password for the room ..."
-            onChange={(e) => setInputPassword(e.target.value)}
+            onChange={handleInputPassword}
           />
         </InputRow>
 
@@ -90,7 +102,10 @@ const CreateGameForm = ({ gameSocket, errMsg }) => {
           </select>
         </InputRow>
 
-        <Btn type="button" onClick={handleCreateGameClicked}>
+        <Btn
+          type="button"
+          onClick={handleCreateGameClicked}
+          disabled={!inputRoom.trim() || !inputPassword.trim()}>
           Create
         </Btn>
         <ErrText>{errMsg}</ErrText>
