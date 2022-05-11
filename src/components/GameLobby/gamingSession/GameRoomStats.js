@@ -25,9 +25,11 @@ const RoomUserInfoDiv = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.2rem;
+  margin-top: 0.5rem;
 
   div {
     display: flex;
+    align-items: center;
   }
 `;
 
@@ -71,7 +73,21 @@ const StartBtn = styled(Btn)`
   margin-right: 0.5rem;
 `;
 
-const GameRoomStats = ({ roomInfo, quitGameFn, startGameFn, startBtnOn }) => {
+const KickBtn = styled(Btn)`
+  background-color: hsl(36, 100%, 84.31%);
+  margin-left: 0.5rem;
+  padding: 4px;
+  color: #333;
+`;
+
+const GameRoomStats = ({
+  roomInfo,
+  quitGameFn,
+  startGameFn,
+  startBtnOn,
+  kickPlayerFn,
+  userSocketId,
+}) => {
   return (
     <GameRoomStatGrid>
       <GameRoomStatHeader>Room States</GameRoomStatHeader>
@@ -84,6 +100,16 @@ const GameRoomStats = ({ roomInfo, quitGameFn, startGameFn, startBtnOn }) => {
             <div key={user.userSocket}>
               <DotDiv />
               {user.name} ({user.userSocket})
+              {userSocketId === roomInfo.host &&
+              userSocketId !== user.userSocket ? (
+                <KickBtn
+                  type="button"
+                  onClick={() => kickPlayerFn(user.userSocket)}>
+                  Kick
+                </KickBtn>
+              ) : (
+                <></>
+              )}
             </div>
           );
         })}
