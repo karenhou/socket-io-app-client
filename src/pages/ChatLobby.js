@@ -5,9 +5,7 @@ import MsgInputSection from "../components/ChatLobby/MsgInputSection";
 import ContainerWrapper from "../components/ChatLobby/ContainerWrapper";
 import MsgSection from "../components/ChatLobby/MsgSection";
 import Sidebar from "../components/Sidebar/Sidebar";
-import { AuthContext } from "../context/AuthContext";
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:3001");
+import { AuthContext, SocketContext } from "../context/AuthContext";
 
 const ChatLobbyContainer = styled.div`
   display: grid;
@@ -31,24 +29,26 @@ const ChatLobby = () => {
     user: { user },
   } = useContext(AuthContext);
 
-  console.log("my socket ", socket.id);
+  const { chatSocket } = useContext(SocketContext);
+
+  console.log("my chatSocket ", chatSocket.id);
 
   useEffect(() => {
-    socket.emit("addUser", {
-      socketId: socket.id,
+    chatSocket.emit("addUser", {
+      socketId: chatSocket.id,
       username: user.username,
     });
-  }, [socket, user]);
+  }, [chatSocket, user]);
 
   return (
     <ChatLobbyContainer>
-      <Sidebar socket={socket} />
+      <Sidebar />
       <ChattingContainer>
         <h1>Chat Lobby</h1>
-        <MsgSection socket={socket} />
-        <MsgInputSection socket={socket} />
+        <MsgSection />
+        <MsgInputSection />
       </ChattingContainer>
-      <ActiveUserList socket={socket} />
+      <ActiveUserList />
     </ChatLobbyContainer>
   );
 };

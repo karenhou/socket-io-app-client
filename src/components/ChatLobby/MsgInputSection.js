@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext, SocketContext } from "../../context/AuthContext";
 
 const TextAreaContainer = styled.div`
   padding: 12px;
@@ -45,12 +45,14 @@ const Btn = styled.button`
   }
 `;
 
-const ChatBoxSection = ({ socket }) => {
+const ChatBoxSection = () => {
   const [inputText, setInputText] = useState("");
 
   const {
     user: { user },
   } = useContext(AuthContext);
+
+  const { chatSocket } = useContext(SocketContext);
 
   const handleTextOnChange = (event) => {
     setInputText(event.target.value);
@@ -59,8 +61,8 @@ const ChatBoxSection = ({ socket }) => {
   const handleSendMsgBtnClicked = () => {
     console.log("handleSendMsgBtnClicked");
 
-    socket.emit("send_message_all", {
-      socketId: socket.id,
+    chatSocket.emit("send_message_all", {
+      socketId: chatSocket.id,
       msg: inputText,
       timestamp: new Date().getTime(),
       username: user.username,

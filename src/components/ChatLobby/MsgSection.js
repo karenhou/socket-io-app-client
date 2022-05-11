@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext, SocketContext } from "../../context/AuthContext";
 
 const MsgContainer = styled.div`
   padding: 12px;
@@ -89,11 +89,13 @@ const MsgFromOthers = ({ msg }) => {
   );
 };
 
-const MsgSection = ({ socket }) => {
+const MsgSection = () => {
   const [receivedMsg, setReceivedMsg] = useState([]);
   const {
     user: { user },
   } = useContext(AuthContext);
+
+  const { chatSocket } = useContext(SocketContext);
 
   const handleReceiveMsgAll = useCallback((data) => {
     console.log("receive_message_all data", data); //socketId, msg,timestamp,username
@@ -104,12 +106,12 @@ const MsgSection = ({ socket }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("receive_message_all", (data) => handleReceiveMsgAll(data));
+    chatSocket.on("receive_message_all", (data) => handleReceiveMsgAll(data));
 
     return () => {
-      socket.off("receive_message_all");
+      chatSocket.off("receive_message_all");
     };
-  }, [socket, receivedMsg]);
+  }, [chatSocket, receivedMsg]);
 
   return (
     <MsgContainer>

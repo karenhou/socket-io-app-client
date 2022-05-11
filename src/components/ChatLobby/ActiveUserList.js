@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { SocketContext } from "../../context/AuthContext";
 import ContainerWrapper from "./ContainerWrapper";
 
 const ActiveUserContainer = styled(ContainerWrapper)`
@@ -28,20 +29,23 @@ const OnlineDot = styled.div`
   align-self: center;
 `;
 
-const ActiveUserList = ({ socket }) => {
+const ActiveUserList = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const { chatSocket } = useContext(SocketContext);
 
   useEffect(() => {
-    socket.on("getUsers", (data) => {
+    chatSocket.on("getUsers", (data) => {
       console.log("getUsers", data);
-      const filteredRes = data.filter((user) => user.socketId !== socket.id);
+      const filteredRes = data.filter(
+        (user) => user.socketId !== chatSocket.id
+      );
       setOnlineUsers(filteredRes);
     });
 
     return () => {
-      socket.off("getUsers");
+      chatSocket.off("getUsers");
     };
-  }, [socket, onlineUsers]);
+  }, [chatSocket, onlineUsers]);
 
   return (
     <ActiveUserContainer>

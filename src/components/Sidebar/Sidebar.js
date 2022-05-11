@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext, SocketContext } from "../../context/AuthContext";
 
 const SideNavContainer = styled.div`
   height: 100vh;
@@ -50,9 +50,10 @@ const LogoutButton = styled.button`
   }
 `;
 
-const Sidebar = ({ socket }) => {
+const Sidebar = () => {
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
+  const { chatSocket } = useContext(SocketContext);
 
   const handleLogoutBtnClicked = (e) => {
     dispatch({ type: "LOGOUT_START" });
@@ -65,8 +66,8 @@ const Sidebar = ({ socket }) => {
       dispatch({ type: "LOGOUT_FAILURE", payload: error });
     }
 
-    socket.emit("removeUser", {
-      socketId: socket.id,
+    chatSocket.emit("removeUser", {
+      socketId: chatSocket.id,
     });
   };
 
