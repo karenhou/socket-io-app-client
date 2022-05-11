@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 const FormBody = styled.form`
   display: grid;
@@ -11,6 +11,7 @@ const FormBody = styled.form`
 const InputRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
+  gap: 0.8rem;
 `;
 
 const Btn = styled.button`
@@ -37,12 +38,26 @@ const ErrText = styled.div`
   text-align: center;
 `;
 
-const JoinGameForm = ({ gameSocket, errMsg }) => {
+const CreateGameForm = ({ gameSocket, errMsg }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [maxPlayerCount, setMaxPlayerCount] = useState(2);
   const {
     user: { user },
   } = useContext(AuthContext);
+
+  const handleCreateGameClicked = (e) => {
+    e.preventDefault();
+    //TODO validation
+    console.log("handleCreateGameClicked", inputRoom, inputPassword);
+    gameSocket.emit("create_game", {
+      roomNum: inputRoom.trim(),
+      password: inputPassword.trim(),
+      host: gameSocket.id,
+      username: user.username,
+      maxPlayerCount,
+    });
+  };
 
   const handleInputRoom = (e) => {
     setInputRoom(e.target.value.trim());
@@ -52,26 +67,16 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
     setInputPassword(e.target.value.trim());
   };
 
-  const handleJoinGameClicked = (e) => {
-    e.preventDefault();
-    //TODO validation
-    console.log("handleJoinGameClicked", inputRoom);
-
-    gameSocket.emit("join_game", {
-      roomNum: inputRoom.trim(),
-      password: inputPassword.trim(),
-      username: user.username,
-    });
+  const handlePlayerCountChanged = (e) => {
+    setMaxPlayerCount(e.target.value);
   };
 
   return (
     <>
-      <h2>Join</h2>
+      <h2>Create</h2>
       <FormBody>
         <InputRow>
-          <label htmlFor="" value={inputRoom}>
-            Room#
-          </label>
+          <label htmlFor="">Room# </label>
           <input
             type="text"
             placeholder="Room Name"
@@ -80,7 +85,7 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
         </InputRow>
 
         <InputRow>
-          <label htmlFor="">Password </label>
+          <label htmlFor="">Password</label>
           <input
             type="password"
             placeholder="Password for the room ..."
@@ -88,11 +93,20 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
           />
         </InputRow>
 
+        <InputRow>
+          <label htmlFor="">Maximum Player</label>
+          <select name="maxPlayerCount" onChange={handlePlayerCountChanged}>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+          </select>
+        </InputRow>
+
         <Btn
           type="button"
-          onClick={handleJoinGameClicked}
+          onClick={handleCreateGameClicked}
           disabled={!inputRoom.trim() || !inputPassword.trim()}>
-          Join
+          Create
         </Btn>
         <ErrText>{errMsg}</ErrText>
       </FormBody>
@@ -100,4 +114,4 @@ const JoinGameForm = ({ gameSocket, errMsg }) => {
   );
 };
 
-export default JoinGameForm;
+export default CreateGameForm;

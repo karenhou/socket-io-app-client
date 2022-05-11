@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import styled from "styled-components";
-import ConfigGame from "../components/GameLobby/ConfigGame";
-import GamingSession from "../components/GameLobby/GamingSession";
+import ConfigGame from "../components/GameLobby/configGame/ConfigGame";
+import GamingSession from "../components/GameLobby/gamingSession/GamingSession";
 import Sidebar from "../components/Sidebar/Sidebar";
 
 const gameSocket = io("http://localhost:3001/game");
