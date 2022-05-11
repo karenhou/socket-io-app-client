@@ -18,11 +18,12 @@ npm start
 - React
 - Styled-component
 - Socket-io.client
+- axios
+- React router
+- React ContextAPI
 
 ## TODOs
 
-- user list
-- strict a room to have 2 person
-- game room host / others
+- profile page
+- navbar
 - host can reset game, kick people
-- use redux to manage state
