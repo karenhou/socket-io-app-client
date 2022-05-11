@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import ConfigGame from "../components/GameLobby/configGame/ConfigGame";
 import GamingSession from "../components/GameLobby/gamingSession/GamingSession";
 import Sidebar from "../components/Sidebar/Sidebar";
-
-const gameSocket = io("http://localhost:3001/game");
+import { SocketContext } from "../context/AuthContext";
 
 const GameLobbyContainer = styled.div`
   display: grid;
@@ -23,6 +21,8 @@ const GameLobby = () => {
   const [configState, setConfigState] = useState(0);
   const [roomInfo, setRoomInfo] = useState(null);
   const [errMsg, setErrMsg] = useState("");
+
+  const { gameSocket } = useContext(SocketContext);
 
   useEffect(() => {
     console.log("gameSocket ", gameSocket.id);
@@ -77,14 +77,11 @@ const GameLobby = () => {
 
   return (
     <GameLobbyContainer>
-      <Sidebar gameSocket={gameSocket} roomInfo={roomInfo} />
+      <Sidebar roomInfo={roomInfo} />
       <GameContainer>
-        {configState === 0 && (
-          <ConfigGame gameSocket={gameSocket} errMsg={errMsg} />
-        )}
+        {configState === 0 && <ConfigGame errMsg={errMsg} />}
         {configState === 1 && roomInfo && (
           <GamingSession
-            gameSocket={gameSocket}
             roomInfo={roomInfo}
             setRoomInfo={setRoomInfo}
             setConfigState={setConfigState}

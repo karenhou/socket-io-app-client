@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { SocketContext } from "../../../context/AuthContext";
 
 import GuessInput from "./GuessInput";
 import GuessRecords from "./GuessRecords";
@@ -19,16 +20,15 @@ const GuessTitle = styled.h3`
   align-self: center;
 `;
 
-const GuessingNumber = ({ gameSocket, roomInfo, targetNumber }) => {
+const GuessingNumber = ({ roomInfo, targetNumber }) => {
   const [hasWon, setHasWon] = useState(0);
   const [guessRecord, setGuessRecord] = useState([]);
 
-  console.log("targetNumber ", targetNumber);
+  const { gameSocket } = useContext(SocketContext);
 
   useEffect(() => {
     gameSocket.on("reset_game", (data) => {
       console.log("reset_game received", data);
-      // setInputGuess("");
       setGuessRecord([]);
       setHasWon(0);
     });
@@ -43,7 +43,6 @@ const GuessingNumber = ({ gameSocket, roomInfo, targetNumber }) => {
       <GuessTitle>GuessingNumber {targetNumber}</GuessTitle>
       <GuessInput
         roomInfo={roomInfo}
-        gameSocket={gameSocket}
         hasWon={hasWon}
         setHasWon={setHasWon}
         targetNumber={targetNumber}
@@ -53,7 +52,7 @@ const GuessingNumber = ({ gameSocket, roomInfo, targetNumber }) => {
 
       <GuessRecords hasWon={hasWon} guessRecord={guessRecord} />
 
-      <GuessScores gameSocket={gameSocket} />
+      <GuessScores />
     </GuessingNumberContainer>
   );
 };

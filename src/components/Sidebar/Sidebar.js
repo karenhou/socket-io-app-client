@@ -50,10 +50,10 @@ const LogoutButton = styled.button`
   }
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ roomInfo }) => {
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
-  const { chatSocket } = useContext(SocketContext);
+  const { chatSocket, gameSocket } = useContext(SocketContext);
 
   const handleLogoutBtnClicked = (e) => {
     dispatch({ type: "LOGOUT_START" });
@@ -68,6 +68,10 @@ const Sidebar = () => {
 
     chatSocket.emit("removeUser", {
       socketId: chatSocket.id,
+    });
+
+    gameSocket.emit("logout_game", {
+      roomNum: roomInfo.roomNum,
     });
   };
 

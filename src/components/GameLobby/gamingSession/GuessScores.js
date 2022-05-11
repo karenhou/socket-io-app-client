@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import { SocketContext } from "../../../context/AuthContext";
 
 const ScoreBoardContainer = styled.div`
   grid-area: scores;
@@ -26,8 +27,9 @@ const ScoreRow = styled.div`
   }
 `;
 
-const GuessScores = ({ gameSocket }) => {
+const GuessScores = () => {
   const [chartInfo, setChartInfo] = useState([]);
+  const { gameSocket } = useContext(SocketContext);
 
   useEffect(() => {
     gameSocket.on("reset_game", (data) => {

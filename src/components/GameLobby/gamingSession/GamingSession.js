@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
+import { SocketContext } from "../../../context/AuthContext";
 import ToastNotification from "../../ToastNotification";
 import GameRoomStats from "./GameRoomStats";
 import GuessingNumber from "./GuessingNumber";
@@ -12,14 +13,11 @@ const GameSessionContainer = styled.div`
   gap: 0.8rem;
 `;
 
-const GamingSession = ({
-  gameSocket,
-  setConfigState,
-  roomInfo,
-  setRoomInfo,
-}) => {
+const GamingSession = ({ setConfigState, roomInfo, setRoomInfo }) => {
   const [targetNumber, setTargetNumber] = useState("");
   const [systemMsg, setSystemMsg] = useState("");
+
+  const { gameSocket } = useContext(SocketContext);
 
   useEffect(() => {
     gameSocket.on("quit_game_result", (data) => {
@@ -59,22 +57,33 @@ const GamingSession = ({
     }, 2500);
   }, [systemMsg]);
 
+  const handleQuitGameClicked = () => {
+    console.log("quit game clicked", roomInfo);
+    gameSocket.emit("quit_game", {
+      roomNum: roomInfo.roomNum,
+    });
+  };
+
+  const handleStartGameClicked = () => {
+    console.log("handleStartGameClicked", roomInfo);
+    gameSocket.emit("start_game", {
+      roomNum: roomInfo.roomNum,
+    });
+  };
+
   return (
     <>
       <ToastNotification msg={systemMsg} />
       <GameSessionContainer>
         <GameRoomStats
+          startBtnOn={!targetNumber && roomInfo.host === gameSocket.id}
           roomInfo={roomInfo}
-          gameSocket={gameSocket}
-          targetNumber={targetNumber}
+          quitGameFn={handleQuitGameClicked}
+          startGameFn={handleStartGameClicked}
         />
 
         {targetNumber && (
-          <GuessingNumber
-            gameSocket={gameSocket}
-            roomInfo={roomInfo}
-            targetNumber={targetNumber}
-          />
+          <GuessingNumber roomInfo={roomInfo} targetNumber={targetNumber} />
         )}
       </GameSessionContainer>
     </>

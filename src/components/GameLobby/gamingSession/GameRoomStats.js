@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { SocketContext } from "../../../context/AuthContext";
 
 const GameRoomStatGrid = styled.div`
   display: grid;
@@ -70,21 +71,7 @@ const StartBtn = styled(Btn)`
   margin-right: 0.5rem;
 `;
 
-const GameRoomStats = ({ roomInfo, gameSocket, targetNumber }) => {
-  const handleQuitGameClicked = () => {
-    console.log("quit game clicked", roomInfo);
-    gameSocket.emit("quit_game", {
-      roomNum: roomInfo.roomNum,
-    });
-  };
-
-  const handleStartGameClicked = () => {
-    console.log("handleStartGameClicked", roomInfo);
-    gameSocket.emit("start_game", {
-      roomNum: roomInfo.roomNum,
-    });
-  };
-
+const GameRoomStats = ({ roomInfo, quitGameFn, startGameFn, startBtnOn }) => {
   return (
     <GameRoomStatGrid>
       <GameRoomStatHeader>Room States</GameRoomStatHeader>
@@ -102,12 +89,12 @@ const GameRoomStats = ({ roomInfo, gameSocket, targetNumber }) => {
         })}
       </RoomUserInfoDiv>
       <ActionRow>
-        {!targetNumber && roomInfo.host === gameSocket.id && (
-          <StartBtn type="button" onClick={handleStartGameClicked}>
+        {startBtnOn && (
+          <StartBtn type="button" onClick={startGameFn}>
             Start
           </StartBtn>
         )}
-        <QuitBtn type="button" onClick={handleQuitGameClicked}>
+        <QuitBtn type="button" onClick={quitGameFn}>
           Quit
         </QuitBtn>
       </ActionRow>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, SocketContext } from "../../../context/AuthContext";
 import { Btn } from "./GameRoomStats";
 
 const GuessInputRow = styled.div`
@@ -49,12 +49,7 @@ const compareResult = (userGuess, answer) => {
 };
 
 const GuessInput = ({
-  // inputGuess,
-  // setInputGuess,
   roomInfo,
-  gameSocket,
-  // handleGuess,
-  // handleResetGame,
   hasWon,
   setHasWon,
   targetNumber,
@@ -65,6 +60,7 @@ const GuessInput = ({
   const {
     user: { user },
   } = useContext(AuthContext);
+  const { gameSocket } = useContext(SocketContext);
 
   useEffect(() => {
     gameSocket.on("reset_game", (data) => {

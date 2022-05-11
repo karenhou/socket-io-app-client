@@ -30,7 +30,7 @@ const ConfigGameForm = styled.div`
   }
 `;
 
-const ConfigGame = ({ gameSocket, errMsg }) => {
+const ConfigGame = ({ errMsg }) => {
   const [currentTab, setCurrentTab] = useState(0);
 
   return (
@@ -41,12 +41,8 @@ const ConfigGame = ({ gameSocket, errMsg }) => {
       />
 
       <ConfigGameForm>
-        {currentTab === 0 && (
-          <CreateGameForm gameSocket={gameSocket} errMsg={errMsg} />
-        )}
-        {currentTab === 1 && (
-          <JoinGameForm gameSocket={gameSocket} errMsg={errMsg} />
-        )}
+        {currentTab === 0 && <CreateGameForm errMsg={errMsg} />}
+        {currentTab === 1 && <JoinGameForm errMsg={errMsg} />}
       </ConfigGameForm>
     </ConfigGameContainer>
   );

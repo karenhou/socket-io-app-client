@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../../context/AuthContext";
+import { AuthContext, SocketContext } from "../../../context/AuthContext";
 
 const FormBody = styled.form`
   display: grid;
@@ -38,13 +38,15 @@ const ErrText = styled.div`
   text-align: center;
 `;
 
-const CreateGameForm = ({ gameSocket, errMsg }) => {
+const CreateGameForm = ({ errMsg }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [maxPlayerCount, setMaxPlayerCount] = useState(2);
   const {
     user: { user },
   } = useContext(AuthContext);
+
+  const { gameSocket } = useContext(SocketContext);
 
   const handleCreateGameClicked = (e) => {
     e.preventDefault();
