@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import BannerImg from "../../assets/images/denis-degioanni-9wH624ALFQA-unsplash.jpeg";
 import CircleImg from "../../assets/images/hello-i-m-nik-Oklzj82ffsQ-unsplash.jpeg";
+import { AuthContext } from "../../context/AuthContext";
 
 const HomeContainer = styled.div`
   background-color: #fff;
@@ -80,14 +81,16 @@ const VentHistoryContainer = styled.div`
 `;
 
 const ProfileLanding = () => {
+  const {
+    user: { user },
+  } = useContext(AuthContext);
   return (
     <HomeContainer>
       <ProfileImgContainer>
         <ProfileCircleContainer />
       </ProfileImgContainer>
       <ProfileBodyContainer>
-        <h1>Name</h1>
-        <h3>Other info</h3>
+        <h2>Hello, {user.username}</h2>
         <TextAreaContainer>
           <WordOfTheDay defaultValue="What's on your mind?"></WordOfTheDay>
 
