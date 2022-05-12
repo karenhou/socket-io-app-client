@@ -74,9 +74,16 @@ const GameLobby = () => {
       console.log("kick_player_result", data);
     });
 
+    gameSocket.on("quit_game_result", (data) => {
+      console.log("quit_game_result", data);
+      setRoomInfo(null);
+      setConfigState(0);
+    });
+
     return () => {
       gameSocket.off("create_game_result");
       gameSocket.off("join_game_result");
+      gameSocket.off("quit_game_result");
       gameSocket.off("roomInfoUpdate");
       gameSocket.off("you_been_kicked");
       gameSocket.off("gameroom_closed");

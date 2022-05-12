@@ -61,18 +61,18 @@ const Sidebar = ({ roomInfo }) => {
     try {
       localStorage.removeItem("user");
       dispatch({ type: "LOGOUT_SUCCESS" });
+      chatSocket.emit("removeUser", {
+        socketId: chatSocket.id,
+      });
+
+      gameSocket.emit("logout_game", {
+        roomNum: roomInfo.roomNum,
+      });
+
       navigate("/", { replace: true });
     } catch (error) {
       dispatch({ type: "LOGOUT_FAILURE", payload: error });
     }
-
-    chatSocket.emit("removeUser", {
-      socketId: chatSocket.id,
-    });
-
-    gameSocket.emit("logout_game", {
-      roomNum: roomInfo.roomNum,
-    });
   };
 
   return (
