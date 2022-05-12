@@ -5,30 +5,26 @@ import { Btn } from "./GameRoomStats";
 
 const GuessInputRow = styled.div`
   grid-area: input;
-  background-color: hsl(50, 100%, 80%);
-  border-radius: 10px;
-  padding: 12px;
-  display: grid;
+  background-color: hsl(105, 43%, 56%);
+  border-radius: 8px;
+  padding: 1rem;
+  height: 70px;
   gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-items: flex-end;
 
   input {
-    padding: 0.3rem;
+    display: flex;
+    padding: 0.3rem 0.6rem;
+    height: 24px;
+    border-radius: 8px;
+    width: -webkit-fill-available;
   }
 `;
 
-const BtnGrid = styled.div`
-  display: grid;
-  grid-template-columns: ${(props) => (props.fullWidth ? "1fr 1fr" : "1fr")};
-  gap: 0.5rem;
-`;
-
 const GuessBtn = styled(Btn)`
-  background-color: hsl(50, 100%, 30%);
-`;
-
-const ResetBtn = styled(Btn)`
-  background-color: hsl(15, 80%, 50%);
+  background-color: hsl(105, 43%, 27%);
 `;
 
 const compareResult = (userGuess, answer) => {
@@ -119,14 +115,12 @@ const GuessInput = ({
         onChange={(e) => setInputGuess(e.target.value)}
       />
 
-      <BtnGrid fullWidth={roomInfo.host === gameSocket.id}>
-        <GuessBtn
-          disabled={inputGuess.length === 0 || hasWon !== 0}
-          onClick={() => handleGuess(inputGuess)}
-          buttonColor="green">
-          Guess
-        </GuessBtn>
-      </BtnGrid>
+      <GuessBtn
+        disabled={inputGuess.length === 0 || hasWon !== 0}
+        onClick={() => handleGuess(inputGuess)}
+        buttonColor="green">
+        Guess
+      </GuessBtn>
     </GuessInputRow>
   );
 };

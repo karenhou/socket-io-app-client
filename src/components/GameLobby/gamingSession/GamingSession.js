@@ -8,9 +8,6 @@ import GuessingNumber from "./GuessingNumber";
 const GameSessionContainer = styled.div`
   width: 80%;
   margin: 0 5rem;
-  display: grid;
-  grid-template-rows: 1fr 5fr;
-  gap: 0.8rem;
 `;
 
 const GamingSession = ({ roomInfo, systemMsg }) => {

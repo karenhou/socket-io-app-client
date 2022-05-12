@@ -27,7 +27,7 @@ const LeftMsgRow = styled.div`
 const PersonLabel = styled.div`
   font-size: 10px;
   padding: 8px;
-  border-radius: 12px;
+  border-radius: 8px;
   color: green;
 `;
 

@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { SocketContext } from "../../../context/AuthContext";
-
 import GuessInput from "./GuessInput";
 import GuessRecords from "./GuessRecords";
-import GuessScores from "./GuessScores";
 
 const GuessingNumberContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.5fr 0.5fr 5fr;
-  grid-template-areas: "title title" "input input" "guessRecord scores";
-  grid-gap: 1rem;
+  grid-template-rows: 30px 200px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: "title title" "input guessRecord";
+  gap: 1rem;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 1.5rem;
+  padding: 1rem;
 `;
 
 const GuessTitle = styled.h3`
   grid-area: title;
-  text-align: center;
-  align-self: center;
 `;
 
 const GuessingNumber = ({ roomInfo, targetNumber }) => {
@@ -51,8 +51,6 @@ const GuessingNumber = ({ roomInfo, targetNumber }) => {
       />
 
       <GuessRecords hasWon={hasWon} guessRecord={guessRecord} />
-
-      <GuessScores />
     </GuessingNumberContainer>
   );
 };

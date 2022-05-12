@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import GuessScores from "./GuessScores";
 
 const GameRoomStatGrid = styled.div`
   display: grid;
@@ -10,7 +11,7 @@ const GameRoomStatGrid = styled.div`
     "scores userInfo";
   background: hsl(105, 55%, 27%);
   color: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 1rem;
   margin-top: 1rem;
   gap: 1rem;
@@ -24,7 +25,7 @@ const GameRoomStatHeader = styled.h3`
 const GameRoomActionDiv = styled.div`
   grid-area: actionRow;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #333;
   padding: 12px 1rem;
   display: grid;
@@ -39,7 +40,7 @@ const ActionRow = styled.div`
 
 export const Btn = styled.button`
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #fff;
 
   :hover {
@@ -68,21 +69,19 @@ const ScoresBox = styled.div`
   grid-area: scores;
   background: #fff;
   color: #333;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 1rem;
   min-height: 70px;
+`;
 
-  div {
-    padding-bottom: 0.5rem;
-    :first-child {
-      border-bottom: solid 1px gray;
-    }
-  }
+const ScoreTitle = styled.div`
+  padding-bottom: 0.5rem;
+  border-bottom: solid 1px gray;
 `;
 
 const RoomUserInfoDiv = styled.div`
   grid-area: userInfo;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #fff;
   padding: 1rem;
   color: #333;
@@ -103,7 +102,7 @@ const HostInfoDiv = styled.div`
 
 const HostLabel = styled.div`
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: hsl(105, 77%, 38%);
   font-size: 12px;
   color: #fff;
@@ -161,17 +160,15 @@ const GameRoomStats = ({
       </GameRoomActionDiv>
 
       <ScoresBox>
-        <div>Scores</div>
+        <ScoreTitle>Scores</ScoreTitle>
+        <GuessScores />
       </ScoresBox>
 
       <RoomUserInfoDiv>
         {roomInfo.currentUser?.map((user) => {
-          if (
-            user.userSocket === userSocketId &&
-            userSocketId === roomInfo.host
-          ) {
+          if (user.userSocket === roomInfo.host) {
             return (
-              <HostInfoDiv>
+              <HostInfoDiv key={user.userSocket}>
                 <div>{user.name}</div>
                 <HostLabel>Host</HostLabel>
               </HostInfoDiv>
@@ -180,11 +177,13 @@ const GameRoomStats = ({
             return (
               <UserInfoDiv key={user.userSocket}>
                 <div>{user.name}</div>
-                <KickBtn
-                  type="button"
-                  onClick={() => kickPlayerFn(user.userSocket)}>
-                  Kick
-                </KickBtn>
+                {userSocketId === roomInfo.host && (
+                  <KickBtn
+                    type="button"
+                    onClick={() => kickPlayerFn(user.userSocket)}>
+                    Kick
+                  </KickBtn>
+                )}
               </UserInfoDiv>
             );
         })}

@@ -2,29 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { SocketContext } from "../../../context/AuthContext";
 
-const ScoreBoardContainer = styled.div`
-  grid-area: scores;
-  background-color: hsl(67, 80%, 50%);
-  padding: 1rem;
-  border-radius: 12px;
-
-  h3 {
-    margin-bottom: 0.5rem;
-  }
-`;
-
 const ScoreRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  div {
-    border: 1px solid white;
-    padding: 0.5rem;
-
-    :nth-child(2) {
-      text-align: end;
-    }
-  }
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
 `;
 
 const GuessScores = () => {
@@ -54,8 +35,7 @@ const GuessScores = () => {
   }, [gameSocket]);
 
   return (
-    <ScoreBoardContainer>
-      <h3>Score Board</h3>
+    <>
       {chartInfo &&
         chartInfo.map((item, index) => {
           const parsed = JSON.parse(item);
@@ -66,7 +46,7 @@ const GuessScores = () => {
             </ScoreRow>
           );
         })}
-    </ScoreBoardContainer>
+    </>
   );
 };
 

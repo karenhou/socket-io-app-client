@@ -15,7 +15,7 @@ const InputRow = styled.div`
 
 const Btn = styled.button`
   padding: 4px 8px;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #fff;
   width: 80px;
   margin: auto;
