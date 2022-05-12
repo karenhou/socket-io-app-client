@@ -29,16 +29,21 @@ const GamingSession = ({ roomInfo, systemMsg }) => {
     };
   }, [gameSocket]);
 
-  const handleQuitGameClicked = () => {
-    console.log("quit game clicked", roomInfo);
-    gameSocket.emit("quit_game", {
+  const handleStartGameClicked = () => {
+    console.log("handleStartGameClicked", roomInfo);
+    gameSocket.emit("start_game", {
       roomNum: roomInfo.roomNum,
     });
   };
 
-  const handleStartGameClicked = () => {
-    console.log("handleStartGameClicked", roomInfo);
-    gameSocket.emit("start_game", {
+  const handleResetGameClicked = () => {
+    console.log("handleResetGame");
+    gameSocket.emit("reset_game", { roomNum: roomInfo.roomNum });
+  };
+
+  const handleQuitGameClicked = () => {
+    console.log("handleQuitGameClicked", roomInfo);
+    gameSocket.emit("quit_game", {
       roomNum: roomInfo.roomNum,
     });
   };
@@ -58,10 +63,12 @@ const GamingSession = ({ roomInfo, systemMsg }) => {
       <GameSessionContainer>
         <GameRoomStats
           startBtnOn={!targetNumber && roomInfo.host === gameSocket.id}
+          isHost={roomInfo.host === gameSocket.id}
           userSocketId={gameSocket.id}
           roomInfo={roomInfo}
-          quitGameFn={handleQuitGameClicked}
           startGameFn={handleStartGameClicked}
+          resetGameFn={handleResetGameClicked}
+          quitGameFn={handleQuitGameClicked}
           kickPlayerFn={handleKickPlayerClicked}
         />
 

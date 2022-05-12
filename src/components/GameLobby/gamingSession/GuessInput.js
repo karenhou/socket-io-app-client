@@ -110,11 +110,6 @@ const GuessInput = ({
     setInputGuess("");
   };
 
-  const handleResetGame = () => {
-    console.log("handleResetGame");
-    gameSocket.emit("reset_game", { roomNum: roomInfo.roomNum });
-  };
-
   return (
     <GuessInputRow>
       <input
@@ -131,12 +126,6 @@ const GuessInput = ({
           buttonColor="green">
           Guess
         </GuessBtn>
-
-        {roomInfo.host === gameSocket.id && (
-          <ResetBtn type="button" onClick={handleResetGame}>
-            Reset
-          </ResetBtn>
-        )}
       </BtnGrid>
     </GuessInputRow>
   );
