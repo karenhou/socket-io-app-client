@@ -25,5 +25,5 @@ npm start
 ## TODOs
 
 - profile page
-- navbar
-- host can reset game, kick people
+- redesign profile/game session
+- refactor
