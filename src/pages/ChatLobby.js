@@ -38,7 +38,7 @@ const ChatLobby = () => {
       socketId: chatSocket.id,
       username: user.username,
     });
-  }, [chatSocket, user]);
+  }, [user]);
 
   return (
     <ChatLobbyContainer>

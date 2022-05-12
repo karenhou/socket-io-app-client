@@ -89,7 +89,7 @@ const GameLobby = () => {
       gameSocket.off("gameroom_closed");
       gameSocket.off("kick_player_result");
     };
-  }, [gameSocket, roomInfo, systemMsg, errMsg, configState]);
+  }, [gameSocket]);
 
   useEffect(() => {
     setTimeout(() => {

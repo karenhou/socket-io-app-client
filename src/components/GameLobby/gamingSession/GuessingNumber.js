@@ -40,7 +40,7 @@ const GuessingNumber = ({ roomInfo, targetNumber }) => {
 
   return (
     <GuessingNumberContainer>
-      <GuessTitle>GuessingNumber {targetNumber}</GuessTitle>
+      <GuessTitle>GuessingNumber</GuessTitle>
       <GuessInput
         roomInfo={roomInfo}
         hasWon={hasWon}

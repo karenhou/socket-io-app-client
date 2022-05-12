@@ -45,7 +45,7 @@ const ActiveUserList = () => {
     return () => {
       chatSocket.off("getUsers");
     };
-  }, [chatSocket, onlineUsers]);
+  }, [chatSocket]);
 
   return (
     <ActiveUserContainer>

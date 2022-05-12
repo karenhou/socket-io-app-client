@@ -111,7 +111,7 @@ const MsgSection = () => {
     return () => {
       chatSocket.off("receive_message_all");
     };
-  }, [chatSocket, receivedMsg]);
+  }, [chatSocket]);
 
   return (
     <MsgContainer>
