@@ -20,7 +20,7 @@ const ChattingContainer = styled(ContainerWrapper)`
 
   h1 {
     padding: 12px;
-    color: #124b00;
+    color: #1e590c;
   }
 `;
 

@@ -39,7 +39,7 @@ const RightGrid = styled.div`
 
 const LoginContainer = styled.div`
   width: 76%;
-  min-height: 50%;
+  min-height: 35%;
   margin: auto;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -52,37 +52,43 @@ const LoginContainer = styled.div`
   h2 {
     margin-bottom: 1rem;
   }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const InputContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   gap: 12px;
+
+  label {
+    text-align: right;
+  }
 
   input {
     padding: 0px 4px;
+    border: solid 1px gray;
+    border-radius: 4px;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: 12px;
   gap: 8px;
   justify-content: center;
-
-  a {
-    width: 100%;
-  }
+  justify-items: center;
 `;
 
 const StyldButton = styled.button`
-  width: 100%;
+  width: 100px;
   padding: 4px 8px;
   border-radius: 5px;
   color: white;
-  background-color: ${(props) => props.btnColor || "#1b7000"};
+  background-color: #1b7000;
   border: none;
 
   :hover {
@@ -92,6 +98,12 @@ const StyldButton = styled.button`
       cursor: not-allowed;
     }
   }
+`;
+
+const ReigsterBtn = styled(StyldButton)`
+  background-color: #fff;
+  border: solid 1px #3aaa16;
+  color: #3aaa16;
 `;
 
 const Home = () => {
@@ -158,7 +170,7 @@ const Home = () => {
           <h2>Login</h2>
           <form>
             <InputContainer>
-              <label htmlFor="">Email: </label>
+              <label htmlFor="">Email </label>
               <input
                 type="text"
                 placeholder="Email here..."
@@ -168,7 +180,7 @@ const Home = () => {
             </InputContainer>
 
             <InputContainer>
-              <label htmlFor="">Password: </label>
+              <label htmlFor="">Password </label>
               <input
                 type="password"
                 placeholder="Password here..."
@@ -184,9 +196,7 @@ const Home = () => {
                 Login
               </StyldButton>
               <Link to="/register">
-                <StyldButton type="button" btnColor="#BEDBB5">
-                  Register
-                </StyldButton>
+                <ReigsterBtn type="button">Register</ReigsterBtn>
               </Link>
             </ButtonContainer>
             <p

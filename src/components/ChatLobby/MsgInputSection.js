@@ -30,11 +30,11 @@ const BtnRow = styled.div`
 
 const Btn = styled.button`
   padding: 8px;
-  background-color: #59bf39;
+  background-color: #3aaa16;
   border: none;
   border-radius: 8px;
   color: #fff;
-  width: 100px;
+  width: 80px;
 
   :hover {
     cursor: pointer;

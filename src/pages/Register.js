@@ -8,7 +8,7 @@ const RegisterContainer = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
-  background-color: #268d06;
+  background-color: #3aaa16;
 `;
 
 const RegisterBox = styled.div`
@@ -27,37 +27,43 @@ const RegisterBox = styled.div`
   h2 {
     margin-bottom: 1rem;
   }
+
+  form {
+    width: 60%;
+  }
 `;
 
 const InputContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   gap: 12px;
+
+  label {
+    text-align: right;
+  }
 
   input {
     padding: 0px 4px;
+    border: solid 1px gray;
+    border-radius: 4px;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: 12px;
+  margin-top: 18px;
   gap: 8px;
   justify-items: center;
-
-  a {
-    width: 100%;
-  }
 `;
 
 const StyldButton = styled.button`
-  width: 100%;
+  width: 100px;
   padding: 4px 8px;
   border-radius: 5px;
   color: ${(props) => props.textColor || "white"};
-  background-color: ${(props) => props.btnColor || "#1b7000"};
+  background-color: ${(props) => props.btnColor || "#3AAA16"};
   border: none;
 
   :hover {
@@ -67,6 +73,12 @@ const StyldButton = styled.button`
       cursor: not-allowed;
     }
   }
+`;
+
+const CancelBtn = styled(StyldButton)`
+  border: solid 1px #de9000;
+  background-color: #fff;
+  color: #de9000;
 `;
 
 const Register = () => {
@@ -139,7 +151,7 @@ const Register = () => {
         <h2>Register</h2>
         <form>
           <InputContainer>
-            <label htmlFor="">User Name: </label>
+            <label htmlFor="">Username</label>
             <input
               type="text"
               placeholder="User Name here..."
@@ -148,7 +160,7 @@ const Register = () => {
             />
           </InputContainer>
           <InputContainer>
-            <label htmlFor="">Email: </label>
+            <label htmlFor="">Email</label>
             <input
               type="text"
               placeholder="Email here..."
@@ -158,7 +170,7 @@ const Register = () => {
           </InputContainer>
 
           <InputContainer>
-            <label htmlFor="">Password: </label>
+            <label htmlFor="">Password</label>
             <input
               type="password"
               placeholder="Password here..."
@@ -168,7 +180,7 @@ const Register = () => {
           </InputContainer>
 
           <InputContainer>
-            <label htmlFor="">Password: </label>
+            <label htmlFor="">Password</label>
             <input
               type="password"
               placeholder="Type Password again..."
@@ -189,14 +201,14 @@ const Register = () => {
               Register
             </StyldButton>
             <Link to="/">
-              <StyldButton btnColor="#d89696">Cancel</StyldButton>
+              <CancelBtn type="button">Cancel</CancelBtn>
             </Link>
           </ButtonContainer>
           <p
             style={{
               color: "red",
               textAlign: "center",
-              marginTop: "8px",
+              marginTop: "4px",
               minHeight: "22.5px",
             }}>
             {errMsg}

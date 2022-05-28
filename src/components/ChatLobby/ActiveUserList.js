@@ -4,16 +4,29 @@ import { SocketContext } from "../../context/AuthContext";
 import ContainerWrapper from "./ContainerWrapper";
 
 const ActiveUserContainer = styled(ContainerWrapper)`
-  background-color: #98dc83;
+  background-color: #bcecac;
   padding: 12px;
-  color: #124b00;
+  color: #3aaa16;
+
+  h3 {
+    text-align: center;
+    font-size: 24px;
+    text-decoration: underline;
+    margin-bottom: 12px;
+    color: #333333;
+    font-weight: 400;
+  }
 `;
 
 const UserRow = styled.div`
   display: grid;
   grid-template-columns: 20px 1fr;
-  padding: 12px;
-  opacity: 0.8;
+  padding: 8px;
+  border-radius: 100px;
+  background-color: #fff;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 
   :hover {
     cursor: pointer;
@@ -24,9 +37,14 @@ const OnlineDot = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #3aaa16;
   column-gap: 8px;
   align-self: center;
+  margin-left: 8px;
+`;
+
+const UserNameText = styled.div`
+  margin-left: 8px;
 `;
 
 const ActiveUserList = () => {
@@ -54,8 +72,8 @@ const ActiveUserList = () => {
         onlineUsers.map((user) => {
           return (
             <UserRow key={user.socketId}>
-              <OnlineDot></OnlineDot>
-              <div>{user.username}</div>
+              <OnlineDot />
+              <UserNameText>{user.username}</UserNameText>
             </UserRow>
           );
         })}

@@ -28,13 +28,13 @@ const PersonLabel = styled.div`
   font-size: 10px;
   padding: 8px;
   border-radius: 8px;
-  color: green;
+  color: #3aaa16;
 `;
 
 const MsgBody = styled.div`
   display: flex;
   border-radius: 8px;
-  border: solid 1px #ccc;
+  max-width: 70%;
   padding: 8px;
   margin-right: ${(props) => (props.right ? "0" : "8px")};
   word-wrap: break-word;
@@ -48,13 +48,11 @@ const MsgBodyLeft = styled.div`
 `;
 
 const MsgNested = styled.div`
-  max-width: 75%;
-  min-width: 20%;
+  max-width: 70%;
   color: #124b00;
   border-radius: 8px;
-  border: solid 1px #ccc;
   padding: 8px;
-  margin-right: ${(props) => (props.right ? "0" : "8px")};
+  margin-right: ${(props) => (props.right ? "0" : "12px")};
   word-wrap: break-word;
   align-items: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -63,9 +61,9 @@ const MsgNested = styled.div`
 
 const TimestampDiv = styled.div`
   align-self: flex-end;
-  color: gray;
+  color: #808080;
   font-size: 10px;
-  margin-right: ${(props) => (props.right ? "8px" : "0")};
+  margin-right: ${(props) => (props.right ? "12px" : "0")};
 `;
 
 const MyOwnMsg = ({ msg }) => {

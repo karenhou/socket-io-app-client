@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, SocketContext } from "../../context/AuthContext";
+import LogoutIcon from "../../assets/icons/logoutIcon.png";
 
 const SideNavContainer = styled.div`
   height: 100vh;
@@ -22,8 +23,8 @@ const SideNavContainer = styled.div`
 `;
 
 const CircleButton = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: inline-block;
   background-color: #fff;
@@ -38,8 +39,10 @@ const CircleButton = styled.div`
 const LogoutButton = styled.button`
   padding: 8px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 50%;
   color: #124b00;
+  width: 48px;
+  height: 48px;
 
   :hover {
     cursor: pointer;
@@ -47,6 +50,11 @@ const LogoutButton = styled.button`
     :disabled {
       cursor: not-allowed;
     }
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -89,7 +97,9 @@ const Sidebar = ({ roomInfo }) => {
         </Link>
       </div>
 
-      <LogoutButton onClick={handleLogoutBtnClicked}>Logout</LogoutButton>
+      <LogoutButton onClick={handleLogoutBtnClicked}>
+        <img src={LogoutIcon} alt="LogoutIcon" />
+      </LogoutButton>
     </SideNavContainer>
   );
 };
