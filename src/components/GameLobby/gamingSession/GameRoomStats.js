@@ -1,15 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import GuessScores from "./GuessScores";
+import playIcon from "../../../assets/icons/play.png";
+import quitIcon from "../../../assets/icons/quit.png";
+import resetIcon from "../../../assets/icons/replay.png";
+import adminIcon from "../../../assets/icons/admin.png";
+import userIcon from "../../../assets/icons/user.png";
 
 const GameRoomStatGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "header header"
-    "actionRow actionRow"
-    "scores userInfo";
-  background: hsl(105, 55%, 27%);
+    "header header header"
+    "infoCard scoresCard usersCard";
+  background: #1e590c;
   color: #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -18,24 +21,53 @@ const GameRoomStatGrid = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 `;
 
-const GameRoomStatHeader = styled.h3`
+const GameRoomStatHeader = styled.div`
   grid-area: header;
+  display: flex;
+  justify-content: space-between;
 `;
 
-const GameRoomActionDiv = styled.div`
-  grid-area: actionRow;
+const IconActionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+const BtnCircle = styled.button`
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+`;
+
+const CardDiv = styled.div`
   background-color: #fff;
   border-radius: 8px;
   color: #333;
   padding: 12px 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 `;
 
-const ActionRow = styled.div`
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: auto;
+const InfoCardDiv = styled(CardDiv)`
+  grid-area: infoCard;
+`;
+
+const InfoItemRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const Btn = styled.button`
@@ -52,39 +84,19 @@ export const Btn = styled.button`
   }
 `;
 
-const StartBtn = styled(Btn)`
-  background-color: hsl(105, 43%, 27%);
+const ScoresCardDiv = styled(CardDiv)`
+  grid-area: scoresCard;
+  /* min-height: 70px; */
 `;
 
-const ResetBtn = styled(Btn)`
-  background-color: hsl(105, 43%, 56%);
+const TitleUnderlineDiv = styled.div`
+  font-size: 1.2rem;
+  text-decoration: underline;
+  margin-bottom: 8px;
 `;
 
-const QuitBtn = styled(Btn)`
-  background-color: hsl(105, 43%, 58%);
-  opacity: 0.5;
-`;
-
-const ScoresBox = styled.div`
-  grid-area: scores;
-  background: #fff;
-  color: #333;
-  border-radius: 8px;
-  padding: 1rem;
-  min-height: 70px;
-`;
-
-const ScoreTitle = styled.div`
-  padding-bottom: 0.5rem;
-  border-bottom: solid 1px gray;
-`;
-
-const RoomUserInfoDiv = styled.div`
-  grid-area: userInfo;
-  border-radius: 8px;
-  background-color: #fff;
-  padding: 1rem;
-  color: #333;
+const RoomUserInfoDiv = styled(CardDiv)`
+  grid-area: usersCard;
 
   div {
     display: flex;
@@ -96,22 +108,22 @@ const RoomUserInfoDiv = styled.div`
 const HostInfoDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: solid 1px gray;
-  padding-bottom: 0.5rem;
-`;
 
-const HostLabel = styled.div`
-  padding: 4px 8px;
-  border-radius: 8px;
-  background-color: hsl(105, 77%, 38%);
-  font-size: 12px;
-  color: #fff;
+  img {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const UserInfoDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 0.5rem;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const KickBtn = styled(Btn)`
@@ -131,51 +143,59 @@ const GameRoomStats = ({
 }) => {
   return (
     <GameRoomStatGrid>
-      <GameRoomStatHeader>Room States</GameRoomStatHeader>
+      <GameRoomStatHeader>
+        <h3>Room States</h3>
+        <IconActionContainer>
+          <BtnCircle type="button" onClick={quitGameFn}>
+            <img src={quitIcon} alt="quitIcon" />
+          </BtnCircle>
 
-      <GameRoomActionDiv>
-        <div>
-          <div>Room Number: {roomInfo.roomNum}</div>
-          <div>Max Player: {roomInfo.maxPlayerCount}</div>
-        </div>
-
-        <ActionRow>
           {startBtnOn && (
-            <StartBtn type="button" onClick={startGameFn}>
-              Start Game
-            </StartBtn>
+            <BtnCircle type="button" onClick={startGameFn}>
+              <img src={playIcon} alt="playIcon" />
+            </BtnCircle>
           )}
 
           {isHost && (
-            <ResetBtn type="button" onClick={resetGameFn}>
-              Reset Game
-            </ResetBtn>
+            <BtnCircle type="button" onClick={resetGameFn}>
+              <img src={resetIcon} alt="resetIcon" />
+            </BtnCircle>
           )}
+        </IconActionContainer>
+      </GameRoomStatHeader>
 
-          <QuitBtn type="button" onClick={quitGameFn}>
-            Quit Game
-          </QuitBtn>
-        </ActionRow>
-        <div></div>
-      </GameRoomActionDiv>
+      <InfoCardDiv>
+        <TitleUnderlineDiv>Info</TitleUnderlineDiv>
+        <InfoItemRow>
+          <div>Room#</div>
+          <div>{roomInfo.roomNum}</div>
+        </InfoItemRow>
 
-      <ScoresBox>
-        <ScoreTitle>Scores</ScoreTitle>
+        <InfoItemRow>
+          <div>Max Player</div>
+          <div>{roomInfo.maxPlayerCount}</div>
+        </InfoItemRow>
+      </InfoCardDiv>
+
+      <ScoresCardDiv>
+        <TitleUnderlineDiv>Scores</TitleUnderlineDiv>
         <GuessScores />
-      </ScoresBox>
+      </ScoresCardDiv>
 
       <RoomUserInfoDiv>
+        <TitleUnderlineDiv>Players</TitleUnderlineDiv>
         {roomInfo.currentUser?.map((user) => {
           if (user.userSocket === roomInfo.host) {
             return (
               <HostInfoDiv key={user.userSocket}>
+                <img src={adminIcon} alt="adminIcon" />
                 <div>{user.name}</div>
-                <HostLabel>Host</HostLabel>
               </HostInfoDiv>
             );
           } else
             return (
               <UserInfoDiv key={user.userSocket}>
+                <img src={userIcon} alt="userIcon" />
                 <div>{user.name}</div>
                 {userSocketId === roomInfo.host && (
                   <KickBtn

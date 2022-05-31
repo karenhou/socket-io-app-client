@@ -11,8 +11,8 @@ const GameNavTab = styled.div`
 const NavDiv = styled.div`
   padding: 12px;
   background-color: ${(props) =>
-    props.idx === props.current ? "#3aaa16" : "#fff"};
-  color: ${(props) => (props.idx === props.current ? "#fff" : "#3aaa16")};
+    props.idx === props.current ? "#3BCECAC" : "#fff"};
+  color: ${(props) => (props.idx === props.current ? "#333" : "#3BCECAC")};
 
   border-top-left-radius: ${(props) =>
     props.idx === props.current ? "5px" : "0px"};
@@ -37,13 +37,13 @@ const ConfigGameNavTabs = ({ setCurrentTab, currentTab }) => {
       <NavItem
         setCurrentTab={setCurrentTab}
         currentTab={currentTab}
-        title="Create"
+        title="Create Room"
         idx={0}
       />
       <NavItem
         setCurrentTab={setCurrentTab}
         currentTab={currentTab}
-        title="Join"
+        title="Join Room"
         idx={1}
       />
     </GameNavTab>

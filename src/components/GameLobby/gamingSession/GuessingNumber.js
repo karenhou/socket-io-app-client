@@ -6,18 +6,20 @@ import GuessRecords from "./GuessRecords";
 
 const GuessingNumberContainer = styled.div`
   display: grid;
-  grid-template-rows: 30px 200px;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: "title title" "input guessRecord";
   gap: 1rem;
-  background-color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin-top: 1.5rem;
-  padding: 1rem;
 `;
 
-const GuessTitle = styled.h3`
-  grid-area: title;
+const GuessInteractionContainer = styled.div`
+  background-color: #1e590c;
+  padding: 16px;
+  border-radius: 8px;
+  min-height: 100px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 `;
 
 const GuessingNumber = ({ roomInfo, targetNumber }) => {
@@ -40,15 +42,17 @@ const GuessingNumber = ({ roomInfo, targetNumber }) => {
 
   return (
     <GuessingNumberContainer>
-      <GuessTitle>GuessingNumber</GuessTitle>
-      <GuessInput
-        roomInfo={roomInfo}
-        hasWon={hasWon}
-        setHasWon={setHasWon}
-        targetNumber={targetNumber}
-        guessRecord={guessRecord}
-        setGuessRecord={setGuessRecord}
-      />
+      <GuessInteractionContainer>
+        <h4>Guess A Number</h4>
+        <GuessInput
+          roomInfo={roomInfo}
+          hasWon={hasWon}
+          setHasWon={setHasWon}
+          targetNumber={targetNumber}
+          guessRecord={guessRecord}
+          setGuessRecord={setGuessRecord}
+        />
+      </GuessInteractionContainer>
 
       <GuessRecords hasWon={hasWon} guessRecord={guessRecord} />
     </GuessingNumberContainer>

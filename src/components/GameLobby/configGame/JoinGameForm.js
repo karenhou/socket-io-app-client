@@ -11,6 +11,17 @@ const FormBody = styled.form`
 const InputRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
+  gap: 1.5rem;
+
+  label {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 4px;
+    border-radius: 4px;
+  }
 `;
 
 const Btn = styled.button`
@@ -21,6 +32,7 @@ const Btn = styled.button`
   margin: auto;
   text-align: center;
   color: #3aaa16;
+  margin-top: 12px;
 
   :hover {
     cursor: pointer;
@@ -66,38 +78,31 @@ const JoinGameForm = ({ errMsg }) => {
   };
 
   return (
-    <>
-      <h2>Join</h2>
-      <FormBody>
-        <InputRow>
-          <label htmlFor="" value={inputRoom}>
-            Room#
-          </label>
-          <input
-            type="text"
-            placeholder="Room Name"
-            onChange={handleInputRoom}
-          />
-        </InputRow>
+    <FormBody>
+      <InputRow>
+        <label htmlFor="" value={inputRoom}>
+          Room#
+        </label>
+        <input type="text" placeholder="Room Name" onChange={handleInputRoom} />
+      </InputRow>
 
-        <InputRow>
-          <label htmlFor="">Password </label>
-          <input
-            type="password"
-            placeholder="Password for the room ..."
-            onChange={handleInputPassword}
-          />
-        </InputRow>
+      <InputRow>
+        <label htmlFor="">Password </label>
+        <input
+          type="password"
+          placeholder="Password for the room ..."
+          onChange={handleInputPassword}
+        />
+      </InputRow>
 
-        <Btn
-          type="button"
-          onClick={handleJoinGameClicked}
-          disabled={!inputRoom.trim() || !inputPassword.trim()}>
-          Join
-        </Btn>
-        <ErrText>{errMsg}</ErrText>
-      </FormBody>
-    </>
+      <Btn
+        type="button"
+        onClick={handleJoinGameClicked}
+        disabled={!inputRoom.trim() || !inputPassword.trim()}>
+        Confirm
+      </Btn>
+      <ErrText>{errMsg}</ErrText>
+    </FormBody>
   );
 };
 

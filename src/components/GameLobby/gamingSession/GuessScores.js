@@ -42,7 +42,7 @@ const GuessScores = () => {
           return (
             <ScoreRow key={index}>
               <div>{parsed.username}</div>
-              <div>{parsed.guessCount} times</div>
+              <div>{parsed.guessCount}</div>
             </ScoreRow>
           );
         })}

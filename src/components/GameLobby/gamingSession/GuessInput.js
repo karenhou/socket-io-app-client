@@ -4,15 +4,9 @@ import { AuthContext, SocketContext } from "../../../context/AuthContext";
 import { Btn } from "./GameRoomStats";
 
 const GuessInputRow = styled.div`
-  grid-area: input;
-  background-color: hsl(105, 43%, 56%);
   border-radius: 8px;
-  padding: 1rem;
-  height: 70px;
-  gap: 1rem;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  justify-items: flex-end;
+  display: flex;
+  gap: 0.8rem;
 
   input {
     display: flex;
@@ -24,7 +18,7 @@ const GuessInputRow = styled.div`
 `;
 
 const GuessBtn = styled(Btn)`
-  background-color: hsl(105, 43%, 27%);
+  background-color: #3aaa16;
 `;
 
 const compareResult = (userGuess, answer) => {
@@ -108,19 +102,18 @@ const GuessInput = ({
 
   return (
     <GuessInputRow>
-      <input
-        placeholder="Enter your guess"
-        type="text"
-        value={inputGuess}
-        onChange={(e) => setInputGuess(e.target.value)}
-      />
-
       <GuessBtn
         disabled={inputGuess.length === 0 || hasWon !== 0}
         onClick={() => handleGuess(inputGuess)}
         buttonColor="green">
         Guess
       </GuessBtn>
+      <input
+        placeholder="Enter your guess"
+        type="text"
+        value={inputGuess}
+        onChange={(e) => setInputGuess(e.target.value)}
+      />
     </GuessInputRow>
   );
 };

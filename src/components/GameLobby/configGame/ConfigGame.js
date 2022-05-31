@@ -5,15 +5,15 @@ import JoinGameForm from "./JoinGameForm";
 import ConfigGameNavTabs from "./ConfigGameNavTabs";
 
 const ConfigGameContainer = styled.div`
-  width: 500px;
-  height: 350px;
+  width: 460px;
+  height: 320px;
   margin: auto;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: #3aaa16;
+  background-color: #bcecac;
   border-radius: 8px;
-  color: white;
+  color: #333;
 `;
 
 const ConfigGameForm = styled.div`
@@ -22,12 +22,6 @@ const ConfigGameForm = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
-  height: 100%;
-
-  h2 {
-    margin-top: 4rem;
-    margin-bottom: 1rem;
-  }
 `;
 
 const ConfigGame = ({ errMsg }) => {

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { AuthContext, SocketContext } from "../../../context/AuthContext";
 
+//TODO refactor this so join game form can share
 const FormBody = styled.form`
   display: grid;
   grid-template-rows: 1fr;
@@ -11,7 +12,22 @@ const FormBody = styled.form`
 const InputRow = styled.div`
   display: grid;
   grid-template-columns: 2fr 3fr;
-  gap: 0.8rem;
+  gap: 1.5rem;
+
+  label {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 4px;
+    border-radius: 4px;
+  }
+
+  select {
+    border-radius: 4px;
+    border: none;
+  }
 `;
 
 const Btn = styled.button`
@@ -22,6 +38,7 @@ const Btn = styled.button`
   margin: auto;
   text-align: center;
   color: #3aaa16;
+  margin-top: 12px;
 
   :hover {
     cursor: pointer;
@@ -52,6 +69,7 @@ const CreateGameForm = ({ errMsg }) => {
     e.preventDefault();
     //TODO validation
     console.log("handleCreateGameClicked", inputRoom, inputPassword);
+
     gameSocket.emit("create_game", {
       roomNum: inputRoom.trim(),
       password: inputPassword.trim(),
@@ -74,45 +92,38 @@ const CreateGameForm = ({ errMsg }) => {
   };
 
   return (
-    <>
-      <h2>Create</h2>
-      <FormBody>
-        <InputRow>
-          <label htmlFor="">Room# </label>
-          <input
-            type="text"
-            placeholder="Room Name"
-            onChange={handleInputRoom}
-          />
-        </InputRow>
+    <FormBody>
+      <InputRow>
+        <label htmlFor="">Room# </label>
+        <input type="text" placeholder="Room Name" onChange={handleInputRoom} />
+      </InputRow>
 
-        <InputRow>
-          <label htmlFor="">Password</label>
-          <input
-            type="password"
-            placeholder="Password for the room ..."
-            onChange={handleInputPassword}
-          />
-        </InputRow>
+      <InputRow>
+        <label htmlFor="">Password</label>
+        <input
+          type="password"
+          placeholder="Password for the room ..."
+          onChange={handleInputPassword}
+        />
+      </InputRow>
 
-        <InputRow>
-          <label htmlFor="">Maximum Player</label>
-          <select name="maxPlayerCount" onChange={handlePlayerCountChanged}>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-          </select>
-        </InputRow>
+      <InputRow>
+        <label htmlFor="">Maximum Player</label>
+        <select name="maxPlayerCount" onChange={handlePlayerCountChanged}>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+        </select>
+      </InputRow>
 
-        <Btn
-          type="button"
-          onClick={handleCreateGameClicked}
-          disabled={!inputRoom.trim() || !inputPassword.trim()}>
-          Create
-        </Btn>
-        <ErrText>{errMsg}</ErrText>
-      </FormBody>
-    </>
+      <Btn
+        type="button"
+        onClick={handleCreateGameClicked}
+        disabled={!inputRoom.trim() || !inputPassword.trim()}>
+        Confirm
+      </Btn>
+      <ErrText>{errMsg}</ErrText>
+    </FormBody>
   );
 };
 
