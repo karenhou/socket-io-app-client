@@ -24,6 +24,10 @@ npm start
 
 ## TODOs
 
-- profile page
-- redesign profile/game session
+- vent APIs - post/get Vents
+- user APIS - update/get user info,
+- upload profile personal images functions, views
+- upload profile background images functions, views
+- RWD
+- private msg functions
 - refactor

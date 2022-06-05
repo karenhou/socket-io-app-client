@@ -106,6 +106,13 @@ const ReigsterBtn = styled(StyldButton)`
   color: #3aaa16;
 `;
 
+const ErrText = styled.p`
+  color: red;
+  text-align: center;
+  margin-top: 8px;
+  min-height: 22.5px;
+`;
+
 const Home = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -154,7 +161,7 @@ const Home = () => {
   useEffect(() => {
     setTimeout(() => {
       setErrMsg("");
-    }, 2000);
+    }, 2500);
   }, [errMsg]);
 
   return (
@@ -190,7 +197,7 @@ const Home = () => {
             </InputContainer>
             <ButtonContainer>
               <StyldButton
-                type="button"
+                type="submit"
                 disabled={!inputEmail || !inputPassword}
                 onClick={handleLoginClicked}>
                 Login
@@ -199,15 +206,7 @@ const Home = () => {
                 <ReigsterBtn type="button">Register</ReigsterBtn>
               </Link>
             </ButtonContainer>
-            <p
-              style={{
-                color: "red",
-                textAlign: "center",
-                marginTop: "8px",
-                minHeight: "22.5px",
-              }}>
-              {errMsg}
-            </p>
+            <ErrText>{errMsg}</ErrText>
           </form>
         </LoginContainer>
       </RightGrid>

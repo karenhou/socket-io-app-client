@@ -190,7 +190,7 @@ const Register = () => {
           </InputContainer>
           <ButtonContainer>
             <StyldButton
-              type="button"
+              type="submit"
               disabled={
                 !inputEmail ||
                 !inputPassword ||
