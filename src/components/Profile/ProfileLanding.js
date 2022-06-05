@@ -3,6 +3,8 @@ import styled from "styled-components";
 import BannerImg from "../../assets/images/denis-degioanni-9wH624ALFQA-unsplash.jpeg";
 import CircleImg from "../../assets/images/hello-i-m-nik-Oklzj82ffsQ-unsplash.jpeg";
 import { AuthContext } from "../../context/AuthContext";
+import VentHistoryList from "./VentHistoryList";
+import VentInput from "./VentInput";
 
 const HomeContainer = styled.div`
   background-color: #fff;
@@ -21,10 +23,10 @@ const ProfileImgContainer = styled.div`
 
 const ProfileCircleContainer = styled.div`
   position: absolute;
-  right: 3rem;
-  top: 4rem;
-  width: 200px;
-  height: 200px;
+  left: 8rem;
+  top: 7.5rem;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   background-image: url(${CircleImg});
   background-position: center center;
@@ -32,76 +34,52 @@ const ProfileCircleContainer = styled.div`
 `;
 
 const ProfileBodyContainer = styled.div`
-  padding: 48px 240px;
+  display: grid;
+  grid-template-columns: 5fr 9fr;
 `;
 
-const TextAreaContainer = styled.div`
-  padding: 12px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: #fff;
-  border-radius: 12px;
-  margin-top: 24px;
+const ProfileLeftContainer = styled.div`
+  margin-top: 140px;
 `;
 
-const WordOfTheDay = styled.textarea`
-  padding: 8px;
-  resize: none;
-  width: inherit;
-  display: block;
-  box-sizing: border-box;
-  border: none;
-  color: #124b00;
-`;
+const ProfileWidthDiv = styled.div`
+  width: 60%;
+  margin: auto;
 
-const BtnRow = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const Btn = styled.button`
-  padding: 8px;
-  background-color: #59bf39;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  width: 100px;
-
-  :hover {
-    cursor: pointer;
-
-    :disabled {
-      cursor: not-allowed;
-    }
+  div {
+    font-size: 1.5rem;
+    color: gray;
   }
 `;
 
-const VentHistoryContainer = styled.div`
-  display: flex;
-  margin-top: 3rem;
+const ProfileRightContainer = styled.div`
+  padding: 0 64px;
 `;
 
 const ProfileLanding = () => {
   const {
     user: { user },
   } = useContext(AuthContext);
+
   return (
     <HomeContainer>
       <ProfileImgContainer>
         <ProfileCircleContainer />
       </ProfileImgContainer>
+
       <ProfileBodyContainer>
-        <h2>Hello, {user.username}</h2>
-        <TextAreaContainer>
-          <WordOfTheDay defaultValue="What's on your mind?"></WordOfTheDay>
+        <ProfileLeftContainer>
+          <ProfileWidthDiv>
+            <div>Name: {user.username}</div>
+            <div>Job</div>
+            <div>Hobby</div>
+          </ProfileWidthDiv>
+        </ProfileLeftContainer>
 
-          <BtnRow>
-            <Btn>Vent</Btn>
-          </BtnRow>
-        </TextAreaContainer>
-
-        <VentHistoryContainer>
-          <h3>Vent History</h3>
-        </VentHistoryContainer>
+        <ProfileRightContainer>
+          <VentInput />
+          <VentHistoryList />
+        </ProfileRightContainer>
       </ProfileBodyContainer>
     </HomeContainer>
   );
