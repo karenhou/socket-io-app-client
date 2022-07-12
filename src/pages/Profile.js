@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 const ProfileContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 16fr;
+  grid-template-columns: 80px 16fr;
 `;
 
 const Profile = () => {

@@ -7,7 +7,7 @@ import { SocketContext } from "../context/AuthContext";
 
 const GameLobbyContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 11fr;
+  grid-template-columns: 80px 11fr;
 `;
 
 const GameContainer = styled.section`

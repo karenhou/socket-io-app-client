@@ -31,3 +31,4 @@ npm start
 - RWD
 - private msg functions
 - refactor
+- deal with when user refresh, room stuck, user stuck - socket

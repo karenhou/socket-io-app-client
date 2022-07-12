@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import BannerImg from "../../assets/images/denis-degioanni-9wH624ALFQA-unsplash.jpeg";
 import CircleImg from "../../assets/images/hello-i-m-nik-Oklzj82ffsQ-unsplash.jpeg";
 import { AuthContext } from "../../context/AuthContext";
 import VentHistoryList from "./VentHistoryList";
 import VentInput from "./VentInput";
+import axios from "axios";
+import moment from "moment";
 
 const HomeContainer = styled.div`
   background-color: #fff;
@@ -61,6 +63,35 @@ const ProfileLanding = () => {
     user: { user },
   } = useContext(AuthContext);
 
+  // useEffect(() => {
+  //   const userData = JSON.parse(localStorage.getItem("user"));
+
+  //   const fetchUserInfo = async () => {
+  //     console.log("first", userData);
+
+  //     try {
+  //       const res = await axios.get(
+  //         "http://localhost:8900/api/auth/get-profile",
+  //         {
+  //           headers: {
+  //             authorization: `Bearer ${userData.id_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       console.log("RES ", res);
+  //     } catch (error) {
+  //       console.log("Opps ", error);
+  //     }
+  //   };
+
+  //   if (userData && userData.id_token) {
+  //     fetchUserInfo();
+  //   } else {
+  //     console.log("NO TOKEN");
+  //   }
+  // }, []);
+
   return (
     <HomeContainer>
       <ProfileImgContainer>
@@ -70,9 +101,9 @@ const ProfileLanding = () => {
       <ProfileBodyContainer>
         <ProfileLeftContainer>
           <ProfileWidthDiv>
-            <div>Name: {user.username}</div>
-            <div>Job</div>
-            <div>Hobby</div>
+            <div>{user.username}</div>
+            <div>{user.email}</div>
+            <div>{moment(user.lastLoginAt).format("L")}</div>
           </ProfileWidthDiv>
         </ProfileLeftContainer>
 

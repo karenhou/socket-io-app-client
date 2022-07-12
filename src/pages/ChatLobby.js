@@ -9,7 +9,7 @@ import { AuthContext, SocketContext } from "../context/AuthContext";
 
 const ChatLobbyContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 11fr 3fr;
+  grid-template-columns: 80px 11fr 3fr;
 `;
 
 const ChattingContainer = styled(ContainerWrapper)`
