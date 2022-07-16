@@ -63,34 +63,63 @@ const ProfileLanding = () => {
     user: { user },
   } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   const userData = JSON.parse(localStorage.getItem("user"));
+  const [thoughts, setThoughts] = useState([]);
 
-  //   const fetchUserInfo = async () => {
-  //     console.log("first", userData);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
 
-  //     try {
-  //       const res = await axios.get(
-  //         "http://localhost:8900/api/auth/get-profile",
-  //         {
-  //           headers: {
-  //             authorization: `Bearer ${userData.id_token}`,
-  //           },
-  //         }
-  //       );
+    const fetchUserInfo = async () => {
+      console.log("first", userData);
 
-  //       console.log("RES ", res);
-  //     } catch (error) {
-  //       console.log("Opps ", error);
-  //     }
-  //   };
+      try {
+        const res = await axios.get(
+          "http://localhost:8900/api/auth/get-profile",
+          {
+            headers: {
+              authorization: `Bearer ${userData.id_token}`,
+            },
+          }
+        );
 
-  //   if (userData && userData.id_token) {
-  //     fetchUserInfo();
-  //   } else {
-  //     console.log("NO TOKEN");
-  //   }
-  // }, []);
+        console.log("RES ", res);
+      } catch (error) {
+        console.log("Opps ", error);
+      }
+    };
+
+    const fetchThoughts = async () => {
+      const configs = {
+        method: "get",
+        url: "http://localhost:8900/api/user/get-thoughts",
+        headers: {
+          authorization: `Bearer ${userData.id_token}`,
+        },
+        params: {
+          email: userData.user.email,
+        },
+      };
+
+      try {
+        const res = await axios(configs);
+
+        console.log("fetchThoughts RES ", res);
+
+        if (res.status === 200) {
+          setThoughts([...res.data.thoughts]);
+        }
+      } catch (error) {
+        console.log("Opps ", error);
+      }
+    };
+
+    if (userData && userData.id_token) {
+      // fetchUserInfo();
+      fetchThoughts();
+    } else {
+      console.log("NO TOKEN");
+      // TODO need to handle
+    }
+  }, [user]);
 
   return (
     <HomeContainer>
@@ -108,8 +137,8 @@ const ProfileLanding = () => {
         </ProfileLeftContainer>
 
         <ProfileRightContainer>
-          <VentInput />
-          <VentHistoryList />
+          <VentInput setThoughts={setThoughts} />
+          <VentHistoryList thoughts={thoughts} />
         </ProfileRightContainer>
       </ProfileBodyContainer>
     </HomeContainer>

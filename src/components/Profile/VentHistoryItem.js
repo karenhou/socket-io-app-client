@@ -43,14 +43,15 @@ const VentContainer = styled(CardDiv)`
   margin-top: 0.5rem;
 `;
 
-const VentHistoryItem = ({ content }) => {
+// TODO container need to add more thought info, like timestamp, mood
+const VentHistoryItem = ({ thought }) => {
   return (
     <TimelineContainer>
       <LineContainer>
         <DotDiv />
         <LineDiv />
       </LineContainer>
-      <VentContainer>{content}</VentContainer>
+      <VentContainer>{thought.content}</VentContainer>
     </TimelineContainer>
   );
 };

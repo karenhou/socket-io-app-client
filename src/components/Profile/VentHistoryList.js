@@ -6,15 +6,13 @@ const VentHistoryContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const FAKE_DATA = {
-  1: "printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popula",
-  2: "printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also",
-};
-const VentHistoryList = () => {
+const VentHistoryList = ({ thoughts }) => {
   return (
     <VentHistoryContainer>
-      <VentHistoryItem content={FAKE_DATA["1"]} />
-      <VentHistoryItem content={FAKE_DATA["2"]} />
+      {thoughts &&
+        thoughts.map((thought, i) => {
+          return <VentHistoryItem key={i} thought={thought} />;
+        })}
     </VentHistoryContainer>
   );
 };

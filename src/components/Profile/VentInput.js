@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const CardDiv = styled.div`
@@ -15,7 +16,7 @@ const TextAreaContainer = styled(CardDiv)`
 const WordOfTheDay = styled.textarea`
   padding: 8px;
   resize: none;
-  width: inherit;
+  width: 100%;
   display: block;
   box-sizing: border-box;
   border: none;
@@ -52,10 +53,45 @@ const Btn = styled.button`
   }
 `;
 
-const VentInput = () => {
+const VentInput = ({ setThoughts }) => {
+  const [vent, setVent] = useState("");
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  const handlerVentSubmit = async (e) => {
+    e.preventDefault();
+    const { user } = userData;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8900/api/user/post-thought",
+        {
+          username: user.username,
+          email: user.email,
+          content: vent,
+          mood: "happy", // TODO add selector to mood
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userData.id_token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setVent("");
+        setThoughts([...res.data.thoughts]);
+      }
+    } catch (error) {
+      console.log("submit vent error", error.response.data);
+    }
+  };
   return (
     <TextAreaContainer>
-      <WordOfTheDay defaultValue="Let it all out..."></WordOfTheDay>
+      <WordOfTheDay
+        onChange={(e) => setVent(e.target.value)}
+        value={vent}
+        placeholder="Say something"
+      />
 
       <BtnRow>
         <select name="mood">
@@ -65,7 +101,7 @@ const VentInput = () => {
           <option value="angry">Angry</option>
           <option value="overwhelmed">Overwhelmed</option>
         </select>
-        <Btn>Vent</Btn>
+        <Btn onClick={handlerVentSubmit}>Vent</Btn>
       </BtnRow>
     </TextAreaContainer>
   );
