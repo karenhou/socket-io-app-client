@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment";
 
 const CardDiv = styled.div`
   padding: 12px;
@@ -23,14 +24,14 @@ const LineContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
+// TODO change this color
 const DotDiv = styled.div`
   border-radius: 50%;
   width: 10px;
   height: 12px;
   background-color: pink;
 `;
-
+// TODO change this color
 const LineDiv = styled.div`
   border-right: solid orange 2px;
   width: 10px;
@@ -39,19 +40,49 @@ const LineDiv = styled.div`
 `;
 
 const VentContainer = styled(CardDiv)`
-  padding: 12px 1rem;
-  margin-top: 0.5rem;
+  padding: 8px 0.8rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
 `;
 
-// TODO container need to add more thought info, like timestamp, mood
+const VentContentDiv = styled.div`
+  font-size: 14px;
+`;
+
+const TimeDiv = styled.div`
+  font-size: 10px;
+  display: flex;
+  justify-content: flex-end;
+  color: #808080;
+`;
+
+const MoodSpan = styled.span`
+  color: ${(props) =>
+    props.mood === "happy"
+      ? "#3aaa16"
+      : props.mood === "sad"
+      ? "#244C7A"
+      : props.mood === "angry"
+      ? "#E94825"
+      : "#634654"};
+`;
+
 const VentHistoryItem = ({ thought }) => {
+  console.log("thouhtss ", thought);
   return (
     <TimelineContainer>
       <LineContainer>
         <DotDiv />
         <LineDiv />
       </LineContainer>
-      <VentContainer>{thought.content}</VentContainer>
+      <VentContainer>
+        <VentContentDiv>{thought.content}</VentContentDiv>
+        <TimeDiv>
+          <MoodSpan mood={thought.mood}>{thought.mood}</MoodSpan>,{" "}
+          {moment(thought.createdAt).format("lll")}
+        </TimeDiv>
+      </VentContainer>
     </TimelineContainer>
   );
 };

@@ -55,6 +55,7 @@ const Btn = styled.button`
 
 const VentInput = ({ setThoughts }) => {
   const [vent, setVent] = useState("");
+  const [mood, setMood] = useState("");
   const userData = JSON.parse(localStorage.getItem("user"));
 
   const handlerVentSubmit = async (e) => {
@@ -68,7 +69,7 @@ const VentInput = ({ setThoughts }) => {
           username: user.username,
           email: user.email,
           content: vent,
-          mood: "happy", // TODO add selector to mood
+          mood: mood,
         },
         {
           headers: {
@@ -85,6 +86,11 @@ const VentInput = ({ setThoughts }) => {
       console.log("submit vent error", error.response.data);
     }
   };
+
+  const handleSelectMood = (e) => {
+    setMood(e.target.value);
+  };
+
   return (
     <TextAreaContainer>
       <WordOfTheDay
@@ -94,7 +100,7 @@ const VentInput = ({ setThoughts }) => {
       />
 
       <BtnRow>
-        <select name="mood">
+        <select name="mood" onChange={handleSelectMood} value={mood}>
           <option value="">Select a mood</option>
           <option value="happy">Happy</option>
           <option value="sad">Sad</option>
